@@ -62,7 +62,7 @@ var vm = new Vue({
         },
         // 企业抬头查询
         searchRiseList() {
-            axios.get("https://fapiao-api.easyapi.com/api/invoice/company/codes", {
+            axios.get("https://fapiao-api.easyapi.com/company/codes", {
                 params: {
                     accessToken: this.accessToken,
                     taxNumber: this.taxNumber,
@@ -92,7 +92,7 @@ var vm = new Vue({
         },
         // 获取获取二维码小票信息
         getScan() {
-            axios.get("https://fapiao-api.easyapi.com/api/scan/" + this.code, {
+            axios.get("https://fapiao-api.easyapi.com/scan/" + this.code, {
                 params: {}
             }).then(res => {
                 console.log(res);
@@ -154,7 +154,7 @@ var vm = new Vue({
             this.upResult.accessToken = this.accessToken;
             this.upResult.taxNumber = this.taxNumber;
             this.upResult.type = this.sendType;
-            axios.put("https://fapiao-api.easyapi.com/api/invoice/scan/" + this.code,
+            axios.put("https://fapiao-api.easyapi.com/scan/" + this.code,
                 this.upResult
             ).then(res => {
                 window.location.href = "success.html";
