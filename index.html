@@ -6,16 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/index.css">
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <title>model</title>
+  <title>扫码开票</title>
 </head>
 
 <body>
 <div id="app" class="container">
   <div class="partOne">
     <p class="warning-tip">
-      您正在使用XXX公司提供的二维码扫描开票服务，请仔细确认开票
+      您正在使用二维码扫描开票服务，请仔细确认开票
       内容，一经开出无法退票重开。
     </p>
 
@@ -38,15 +36,15 @@
       <div class="InvoiceRise">
         <span>发票抬头</span>
         <p>
-          <input type="text" v-model="purchaserName" placeholder="请输入发票抬头" @keyup="searchRiseList">
+          <input type="text" v-model="name" placeholder="请输入发票抬头" @keyup="searchCompanyTitleList">
         </p>
         <div class="drop-down" v-if="dropDownShow">
-          <p v-for="(item,index) in searchList" :key="index" @click="chooseRise(index)">{{item.kpName}}</p>
+          <p v-for="(item,index) in searchList" :key="index" @click="chooseCompanyTitle(index)">{{item.name}}</p>
         </div>
       </div>
       <div class="DutyParagraph public-r">
         <span>税号</span>
-        <input type="text" placeholder="请输入税号" v-model="purchaserTaxpayerNumber">
+        <input type="text" placeholder="请输入税号" v-model="taxNumber">
       </div>
       <div class="public-r">
         <span>电话</span>
@@ -57,8 +55,12 @@
         <input type="text" placeholder="请输入地址" v-model="address">
       </div>
       <div class="public-r">
-        <span>开户行和账号</span>
-        <input type="text" placeholder="请输入开户行和账号" v-model="purchaserBank">
+        <span>开户行</span>
+        <input type="text" placeholder="请输入开户行" v-model="bank">
+      </div>
+      <div class="public-r">
+        <span>银行账号</span>
+        <input type="text" placeholder="请输入开户行账号" v-model="bankAccount">
       </div>
     </div>
 
@@ -74,7 +76,6 @@
         <li>单位</li>
         <li>数量</li>
         <li>单价</li>
-        <!-- <li>操作</li> -->
       </ul>
       <ul class="contents-content" v-for="content in scanList">
         <li style="width: 24%;line-height: 15px;padding-top:12px">{{content.name}}</li>
@@ -82,7 +83,6 @@
         <li>{{content.unit}}</li>
         <li>{{content.number}}</li>
         <li>{{content.price}}</li>
-        <!-- <li style="color: #56cbf6" @click="">删除</li> -->
       </ul>
     </div>
     <div class="inventory-remarks">
@@ -115,6 +115,8 @@
     </p>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/flexible.js"></script>
 </body>
