@@ -32,6 +32,7 @@
       display: inline-block;
       font-size: 16px;
     }
+    .pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
 
   </style>
 </head>
@@ -41,14 +42,13 @@
   <h1>发票信息</h1>
 </div>
 <div class="content">
-  <p><img width="100%" id="imgUrl" src=""></p>
-  <p><a id="pdfUrl" class="button" href="">下载PDF</a></p>
+  <div id="pdfUrl"></div>
 </div>
 <script src="js/flexible.js"></script>
+<script src="js/pdfobject.min.js"></script>
+<script></script>
 <script>
-  document.getElementById("imgUrl").src = this.getQueryString("imgUrl");
-  document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
-
+  PDFObject.embed(this.getQueryString("pdfUrl"), "#pdfUrl");
   // 获取地址栏URL参数
   function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
