@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>二维码开票</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    .title {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .title > h1 {
+      text-align: center;
+      font-size: 0.48rem;
+      padding: 0.32rem 0;
+    }
+
+    .content > p {
+      margin: 20px 0 20px 0;
+      text-align: center;
+    }
+
+    .button {
+      background-color: #008CBA;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="title">
+  <h1>发票信息</h1>
+</div>
+<div class="content">
+  <p><img width="100%" id="imgUrl" src=""></p>
+  <p><a id="pdfUrl" class="button" href="">下载PDF</a></p>
+</div>
+<script src="js/flexible.js"></script>
+<script>
+  document.getElementById("imgUrl").src = this.getQueryString("imgUrl");
+  document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
+
+  // 获取地址栏URL参数
+  function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
+</script>
+</body>
+
+</html>

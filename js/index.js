@@ -17,7 +17,6 @@ var vm = new Vue({
       phone: '',
       bank: '',
       bankAccount: '',
-      companyID: '',
       upResult: {},
       searchList: [],
       sendType: '企业',
@@ -81,6 +80,12 @@ var vm = new Vue({
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
         params: {}
       }).then(res => {
+        if (res.data.content.state == -1 || res.data.content.state == -2) {
+          window.location.href = "expire.html";
+        }
+        if (res.data.content.state == 1) {
+          window.location.href = "invoice.html?pdfUrl=" + res.data.content.invoice.pdfUrl + "&imgUrl=" + res.data.content.invoice.imgUrl;
+        }
         this.scanContent = res.data.content;
         this.accessToken = this.scanContent.accessToken;
         this.scanList = res.data.content.invoiceScanItems;
