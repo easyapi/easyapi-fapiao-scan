@@ -32,23 +32,22 @@
       display: inline-block;
       font-size: 16px;
     }
-    .pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
 
   </style>
 </head>
 
 <body>
 <div class="title">
-  <h1>发票信息</h1>
+  <h1>发票已开具</h1>
 </div>
 <div class="content">
-  <div id="pdfUrl"></div>
+  <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
 </div>
 <script src="js/flexible.js"></script>
-<script src="js/pdfobject.min.js"></script>
 <script></script>
 <script>
-  PDFObject.embed(this.getQueryString("pdfUrl"), "#pdfUrl");
+  document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
+
   // 获取地址栏URL参数
   function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
