@@ -25,7 +25,8 @@ var vm = new Vue({
       remark: '',
       code: '',
       disabled: false,
-      disabledBtn: 0
+      disabledBtn: 0,
+      companyNameShow:''
     }
   },
   created() {
@@ -62,8 +63,10 @@ var vm = new Vue({
       }).then(res => {
         this.searchList = res.data.content;
         this.dropDownShow = true;
+        this.companyNameShow = ''
       }).catch(error => {
-        console.log(error)
+        console.log(error);
+        this.companyNameShow = ''
       });
     },
     chooseCompanyTitle(index) {
@@ -74,6 +77,7 @@ var vm = new Vue({
       this.bank = this.searchList[index].bank;
       this.bankAccount = this.searchList[index].bankAccount;
       this.dropDownShow = false;
+      this.companyNameShow = this.name
     },
     // 获取获取二维码小票信息
     getScan() {

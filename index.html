@@ -13,7 +13,7 @@
 <div id="app" class="container">
   <div class="partOne">
     <p class="warning-tip">
-      您正在使用二维码扫描开票服务，请仔细确认开票
+      您正在使用{{companyNameShow}}二维码扫描开票服务，请仔细确认开票
       内容，一经开出无法退票重开。
     </p>
 
@@ -92,7 +92,8 @@
       </div>
       <div class="public-r">
         <span>备注</span>
-        <span style="color:#999;">{{remark}}</span>
+        <!-- <span style="color:#999;">{{remark}}</span> -->
+        <input type="text" :value="remark">
       </div>
     </div>
   </div>
