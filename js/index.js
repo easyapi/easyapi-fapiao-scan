@@ -79,6 +79,24 @@ var vm = new Vue({
       this.dropDownShow = false;
       this.companyNameShow = this.name
     },
+    //发票抬头失焦后
+    inputBlur(){
+      this.dropDownShow = false;
+      var has;
+      has = false;
+      for(var i = 0; i < this.searchList.length; i++){
+        if(this.searchList[i].name === this.name){
+          has = true;
+        }
+      };
+      if(!has){
+        this.taxNumber = '';
+        this.address = '';
+        this.phone = '';
+        this.bank = '';
+        this.bankAccount = '';
+      }
+    },
     // 获取获取二维码小票信息
     getScan() {
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {

@@ -36,10 +36,10 @@
       <div class="InvoiceRise">
         <span>发票抬头</span>
         <p>
-          <input type="text" v-model="name" placeholder="请输入发票抬头" @keyup="searchCompanyTitleList">
+          <input type="text" v-model="name" placeholder="请输入发票抬头" @focus = "searchCompanyTitleList" @keyup="searchCompanyTitleList" @blur="inputBlur">
         </p>
         <div class="drop-down" v-if="dropDownShow">
-          <p v-for="(item,index) in searchList" :key="index" @click="chooseCompanyTitle(index)">{{item.name}}</p>
+          <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
         </div>
       </div>
       <div class="DutyParagraph public-r">
