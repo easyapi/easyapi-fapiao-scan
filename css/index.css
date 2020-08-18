@@ -222,6 +222,7 @@ input{
     cursor: pointer;
     letter-spacing: 5px;
     font-size: 16px;
+    border: solid 2px #ccc;
 }
 .disabledClass{
     background: #ddd!important;
