@@ -29,10 +29,10 @@
         <p>
           <span v-bind:class="{ selected:1==current}"></span>
         </p>
-        <span>个人</span>
+        <span>个人/事业单位</span>
       </div>
     </div>
-    <div v-if="willShow" class="company-imfor">
+    <div  class="company-imfor">
       <div class="InvoiceRise">
         <span>发票抬头</span>
         <p>
@@ -42,23 +42,23 @@
           <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
         </div>
       </div>
-      <div class="DutyParagraph public-r">
+      <div v-if="willShow" class="DutyParagraph public-r">
         <span>税号</span>
         <input type="text" placeholder="请输入税号" v-model="taxNumber">
       </div>
-      <div class="public-r">
+      <div v-if="willShow" class="public-r">
         <span>电话</span>
         <input type="text" placeholder="请输入电话" v-model="phone">
       </div>
-      <div class="public-r">
+      <div v-if="willShow" class="public-r">
         <span>地址</span>
         <input type="text" placeholder="请输入地址" v-model="address">
       </div>
-      <div class="public-r">
+      <div v-if="willShow" class="public-r">
         <span>开户行</span>
         <input type="text" placeholder="请输入开户行" v-model="bank">
       </div>
-      <div class="public-r">
+      <div v-if="willShow" class="public-r">
         <span>银行账号</span>
         <input type="text" placeholder="请输入开户行账号" v-model="bankAccount">
       </div>

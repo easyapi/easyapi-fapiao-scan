@@ -12,6 +12,7 @@ var vm = new Vue({
       email: '',
       NeedEmail: true,
       name: '',
+      nameTemp: '',
       taxNumber: '',
       address: '',
       phone: '',
@@ -49,8 +50,11 @@ var vm = new Vue({
       index == 0 ? this.sendType = "企业" : this.sendType = "个人";
       if (this.willShow == true && this.sendType == "个人") {
         this.willShow = false;
+        this.nameTemp = this.name;
+        this.name = "个人"
       } else if (this.willShow == false && this.sendType == "企业") {
         this.willShow = true;
+        this.name = this.nameTemp
       }
     },
     // 企业抬头查询

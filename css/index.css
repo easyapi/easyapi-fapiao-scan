@@ -215,7 +215,7 @@ input{
 }
 .partTwo>p:last-child>button{
     text-align: center;
-    padding: 0.3rem 4.2rem;
+    padding: 0.3rem 4rem;
     border-radius: 5px;
     background: #52c9f5;
     color: #fff;
