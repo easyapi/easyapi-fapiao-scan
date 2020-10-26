@@ -86,9 +86,9 @@ var vm = new Vue({
     //发票抬头失焦后
     inputBlur(){
       this.dropDownShow = false;
-      var has;
+      let has;
       has = false;
-      for(var i = 0; i < this.searchList.length; i++){
+      for(let i = 0; i < this.searchList.length; i++){
         if(this.searchList[i].name === this.name){
           has = true;
         }
