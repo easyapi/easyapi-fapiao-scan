@@ -27,7 +27,7 @@ var vm = new Vue({
       code: '',
       disabled: false,
       disabledBtn: 0,
-      companyNameShow:''
+      companyNameShow: ''
     }
   },
   created() {
@@ -84,16 +84,17 @@ var vm = new Vue({
       this.companyNameShow = this.name
     },
     //发票抬头失焦后
-    inputBlur(){
+    inputBlur() {
       this.dropDownShow = false;
       let has;
       has = false;
-      for(let i = 0; i < this.searchList.length; i++){
-        if(this.searchList[i].name === this.name){
+      for (let i = 0; i < this.searchList.length; i++) {
+        if (this.searchList[i].name === this.name) {
           has = true;
         }
-      };
-      if(!has){
+      }
+      ;
+      if (!has) {
         this.taxNumber = '';
         this.address = '';
         this.phone = '';

@@ -31,6 +31,7 @@
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
+      width: 130px;
     }
 
   </style>
@@ -38,12 +39,17 @@
 
 <body>
 <div class="title">
-  <h1>发票已开具</h1>
+  <h1>发票开具中</h1>
+</div>
+<div>
+  <p>预览发票</p>
 </div>
 <div class="content">
   <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
+  <p><a id="save" class="button" href="">保存图片</a></p>
 </div>
 <script src="js/flexible.js"></script>
+<script src="js/index.js"></script>
 <script></script>
 <script>
   document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
