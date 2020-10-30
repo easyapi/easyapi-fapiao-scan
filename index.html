@@ -32,11 +32,12 @@
         <span>个人/事业单位</span>
       </div>
     </div>
-    <div  class="company-imfor">
+    <div class="company-imfor">
       <div class="InvoiceRise">
         <span>发票抬头</span>
         <p>
-          <input type="text" v-model="name" placeholder="请输入发票抬头" @focus = "searchCompanyTitleList" @keyup="searchCompanyTitleList" @blur="inputBlur">
+          <input type="text" v-model="name" placeholder="请输入发票抬头" @focus="searchCompanyTitleList"
+                 @keyup="searchCompanyTitleList" @blur="inputBlur">
         </p>
         <div class="drop-down" v-if="dropDownShow">
           <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
@@ -110,7 +111,7 @@
     <p>
       <span>电子邮箱</span>
       <input type="text" v-model="email" placeholder="请输入电子邮箱">
-    </p>
+    </p>l
     <p>
       <button :class="{'disabledClass':disabledBtn==-1}" @click="saveAndUpload" :disabled="disabled">提交</button>
     </p>
