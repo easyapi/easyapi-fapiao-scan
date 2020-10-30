@@ -4,6 +4,8 @@ var vm = new Vue({
     return {
       current: 0,
       willShow: true,
+      isHide: true,
+      isShow: false,
       dropDownShow: false,
       accessToken: '',
       mobile: '',
@@ -37,6 +39,14 @@ var vm = new Vue({
     this.getScan();
   },
   methods: {
+    showMore() {
+      this.isHide = false;
+      this.isShow = true;
+    },
+    hide() {
+      this.isShow = false;
+      this.isHide = true;
+    },
     // 获取地址栏URL参数
     GetQueryString(name) {
       var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

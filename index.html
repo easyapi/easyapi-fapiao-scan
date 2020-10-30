@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10/lib/index.css"/>
   <title>扫码开票</title>
 </head>
 
@@ -32,12 +33,24 @@
         <span>个人/事业单位</span>
       </div>
     </div>
-    <div class="company-imfor">
+    <div v-show="isHide">
+      <van-field
+        label="更多"
+        right-icon="arrow-down"
+        readonly
+        @click="showMore"
+        placeholder="地址、电话、开户行等"
+      />
+    </div>
+    <div class="company-imfor" v-show="isShow">
       <div class="InvoiceRise">
         <span>发票抬头</span>
         <p>
           <input type="text" v-model="name" placeholder="请输入发票抬头" @focus="searchCompanyTitleList"
                  @keyup="searchCompanyTitleList" @blur="inputBlur">
+          <span @click="hide">
+            <van-icon name="arrow-up" />
+          </span>
         </p>
         <div class="drop-down" v-if="dropDownShow">
           <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
@@ -119,6 +132,8 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.10/lib/vant.min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/flexible.js"></script>
 </body>
