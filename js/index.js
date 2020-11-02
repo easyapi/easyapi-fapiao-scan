@@ -3,33 +3,62 @@ var vm = new Vue({
   data() {
     return {
       current: 0,
+      invoiceForm: {
+        type: ""
+      },
       willShow: true,
-      isHide: true,
-      isShow: false,
-      dropDownShow: false,
-      accessToken: '',
-      mobile: '',
-      NeedMobile: true,
-      type: '',
-      email: '',
-      NeedEmail: true,
-      name: '',
-      nameTemp: '',
-      taxNumber: '',
-      address: '',
-      phone: '',
-      bank: '',
-      bankAccount: '',
-      upResult: {},
+      isHide:
+        true,
+      isShow:
+        false,
+      dropDownShow:
+        false,
+      accessToken:
+        '',
+      mobile:
+        '',
+      NeedMobile:
+        true,
+      type:
+        '',
+      email:
+        '',
+      NeedEmail:
+        true,
+      name:
+        '',
+      nameTemp:
+        '',
+      taxNumber:
+        '',
+      address:
+        '',
+      phone:
+        '',
+      bank:
+        '',
+      bankAccount:
+        '',
+      upResult:
+        {}
+      ,
       searchList: [],
-      sendType: '企业',
-      scanList: '',
-      scanContent: "",
-      remark: '',
-      code: '',
-      disabled: false,
-      disabledBtn: 0,
-      companyNameShow: ''
+      sendType:
+        '企业',
+      scanList:
+        '',
+      scanContent:
+        "",
+      remark:
+        '',
+      code:
+        '',
+      disabled:
+        false,
+      disabledBtn:
+        0,
+      companyNameShow:
+        ''
     }
   },
   created() {
@@ -46,6 +75,19 @@ var vm = new Vue({
     hide() {
       this.isShow = false;
       this.isHide = true;
+    },
+    selectType() {
+      localStorage.setItem("type", this.invoiceForm.type);
+      if (this.invoiceForm.type === "企业") {
+      } else if (this.invoiceForm.type === "个人") {
+        this.invoiceForm.purchaserName = "个人";
+        this.invoiceForm.purchaserTaxpayerNumber = "";
+        this.invoiceForm.address = "";
+        this.invoiceForm.phone = "";
+        this.invoiceForm.purchaserBank = "";
+        this.invoiceForm.purchaserBankAccount = "";
+        this.invoiceForm.companyId = "";
+      }
     },
     // 获取地址栏URL参数
     GetQueryString(name) {

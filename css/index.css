@@ -5,7 +5,6 @@ input {
 
 .container {
   width: 10rem;
-  height: auto;
   background-color: #ffffff;
   /* border-bottom: 1px solid #ddd; */
   border-radius: 5px;
@@ -14,13 +13,11 @@ input {
 
 .partOne, .partTwo {
   /* width:90%; */
-  margin: auto;
 }
 
 .inventory-remarks > div, .tabChange, .company-imfor > div {
   border-bottom: 1px solid #ddd;
   height: 1.2rem;
-  padding: 0 0.32rem;
 }
 
 /* .company-imfor>div{
@@ -219,6 +216,10 @@ input {
   padding: 0 0.32rem;
 }
 
+.cell {
+  border-bottom: 1px solid #ddd
+}
+
 .partTwo > p:first-child input, .partTwo > p:nth-child(2) input {
   width: 7rem;
   height: 70%;
@@ -260,4 +261,17 @@ input {
 
 .disabledClass {
   background: #ddd !important;
+}
+
+.page-part p {
+  height: 30px;
+  line-height: 30px;
+  background-color: #f2f2f2;
+  padding: 0px 10px;
+  color: #666666;
+  font-size: 14px;
+}
+
+.van-cell__value {
+  min-width: 70%;
 }
