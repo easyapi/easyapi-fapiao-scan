@@ -217,7 +217,7 @@ input {
 }
 
 .cell {
-  border-bottom: 1px solid #ddd
+  border-bottom: 1px solid #ebedf0
 }
 
 .partTwo > p:first-child input, .partTwo > p:nth-child(2) input {
