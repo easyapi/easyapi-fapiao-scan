@@ -2,7 +2,7 @@
   border-bottom: 1px solid #ddd;
 }
 
-.title>h1 {
+.title > h1 {
   text-align: center;
   font-size: 0.48rem;
   padding: 0.32rem 0;
@@ -12,24 +12,25 @@
   text-align: center;
 }
 
-.content>img {
+.content > img {
   width: 2.2rem;
   height: 2.2rem;
   margin: 1.2rem auto 0.48rem;
   background-size: 100% 100%;
 }
 
-.content>h2,
-.content>p {
+.content > h2,
+.content > p {
+  padding: 15px 20px;
   text-align: center;
 }
 
-.content>h2 {
+.content > h2 {
   font-size: 0.53rem;
   padding: 0.12rem 0 0.32rem 0;
 }
 
-.content>p {
+.content > p {
   font-size: 0.37rem;
   color: #888888;
 }
