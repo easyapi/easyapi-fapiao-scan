@@ -25,17 +25,19 @@
         <van-radio name="个人">个人/事业单位</van-radio>
       </van-radio-group>
     </van-cell>
-    <van-field v-model="name" label="发票抬头" placeholder="请输入发票抬头" @focus="searchCompanyTitleList"
-               @keyup="searchCompanyTitleList" @blur="inputBlur">
-    </van-field>
-    <div class="drop-down" v-if="dropDownShow">
-      <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
-    </div>
-    <van-field v-if="willShow" v-model="taxNumber" label="税号" placeholder="请输入税号"/>
-    <van-field v-if="willShow" v-model="phone" label="电话" placeholder="请输入电话"/>
-    <van-field v-if="willShow" v-model="address" label="地址" placeholder="请输入地址"/>
-    <van-field v-if="willShow" v-model="bank" label="开户行" placeholder="请输入开户行"/>
-    <van-field v-if="willShow" v-model="bankAccount" label="银行账号" placeholder="请输入开户行账号"/>
+    <form>
+      <van-field v-model="name" label="发票抬头" placeholder="请输入发票抬头" @focus="searchCompanyTitleList"
+                 @keyup="searchCompanyTitleList" @blur="inputBlur">
+      </van-field>
+      <div class="drop-down" v-if="dropDownShow">
+        <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
+      </div>
+      <van-field v-if="willShow" v-model="taxNumber" label="税号" placeholder="请输入税号"/>
+      <van-field v-if="willShow" v-model="phone" label="电话" placeholder="请输入电话"/>
+      <van-field v-if="willShow" v-model="address" label="地址" placeholder="请输入地址"/>
+      <van-field v-if="willShow" v-model="bank" label="开户行" placeholder="请输入开户行"/>
+      <van-field v-if="willShow" v-model="bankAccount" label="银行账号" placeholder="请输入开户行账号"/>
+    </form>
   </div>
   <div class="titleReceive">
     <p>发票内容</p>
