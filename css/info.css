@@ -19,9 +19,8 @@
   background-size: 100% 100%;
 }
 
-.content > h2,
-.content > p {
-  padding: 15px 20px;
+.content > h2, .content > p {
+  padding: 1rem 1.1rem;
   text-align: center;
 }
 
