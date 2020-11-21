@@ -11,6 +11,10 @@ input {
   min-width: 70%;
 }
 
+.van-cell__value > span {
+  color: #646566;
+}
+
 .container {
   width: 10rem;
   background-color: #f7f8fa;
