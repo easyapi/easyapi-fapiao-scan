@@ -35,11 +35,20 @@
       </div>
       <van-field v-if="willShow" v-model="invoiceForm.purchaserTaxpayerNumber" label="税号"
                  placeholder="请输入税号"></van-field>
-      <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" placeholder="请输入地址"></van-field>
-      <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
-      <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
-      <van-field v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号"
-                 placeholder="请输入开户行账号"></van-field>
+      <van-field v-if="willShow"
+                 v-show="isHide"
+                 label="更多"
+                 placeholder="地址、电话、开户行等"
+                 @click="purchaserMore"
+                 right-icon="arrow-down"
+      ></van-field>
+      <div v-show="isShow">
+        <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" @click="purchaserMoreHide" placeholder="请输入地址" right-icon="arrow-up"></van-field>
+        <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
+        <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
+        <van-field v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号"
+                   placeholder="请输入开户行账号"></van-field>
+      </div>
     </van-cell-group>
   </div>
   <div>
@@ -71,7 +80,7 @@
     </van-cell-group>
   </div>
   <div style="margin: 16px;">
-    <van-button @click="makeInvoice"  round block type="info" native-type="button" :disabled="disabled">
+    <van-button @click="makeInvoice" round block type="info" native-type="button" :disabled="disabled">
       提交
     </van-button>
   </div>

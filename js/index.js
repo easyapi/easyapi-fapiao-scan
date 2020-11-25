@@ -40,21 +40,26 @@ var vm = new Vue({
     this.getScan();
   },
   methods: {
-    submit(){
-      console.log(111)
-    },
-    showMore() {
-      this.isHide = false;
+    //展示更多
+    purchaserMore() {
       this.isShow = true;
+      this.isHide = false;
     },
-    hide() {
+    //隐藏
+    purchaserMoreHide() {
       this.isShow = false;
       this.isHide = true;
+    },
+    submit() {
+      console.log(111)
     },
     selectType() {
       localStorage.setItem("type", this.invoiceForm.type);
       if (this.invoiceForm.type === "企业") {
+        this.invoiceForm.purchaserName = "";
+        this.willShow = true
       } else if (this.invoiceForm.type === "个人") {
+        this.willShow = false
         this.invoiceForm.purchaserName = "个人";
         this.invoiceForm.purchaserTaxpayerNumber = "";
         this.invoiceForm.address = "";
@@ -70,19 +75,6 @@ var vm = new Vue({
       var r = window.location.search.substr(1).match(reg);
       if (r != null) return unescape(r[2]);
       return null;
-    },
-    // 切换个人与单位
-    tabChange(index) {
-      this.current = index;
-      index == 0 ? this.sendType = "企业" : this.sendType = "个人";
-      if (this.willShow == true && this.sendType == "个人") {
-        this.willShow = false;
-        this.nameTemp = this.invoiceForm.purchaserName;
-        this.invoiceForm.purchaserName = "个人"
-      } else if (this.willShow == false && this.sendType == "企业") {
-        this.willShow = true;
-        this.invoiceForm.purchaserName = this.nameTemp
-      }
     },
     // 企业抬头查询
     searchCompanyTitleList() {
