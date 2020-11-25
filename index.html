@@ -71,7 +71,7 @@
     </van-cell-group>
   </div>
   <div style="margin: 16px;">
-    <van-button round block type="info" native-type="makeInvoice" :disabled="disabled">
+    <van-button @click="makeInvoice"  round block type="info" native-type="button" :disabled="disabled">
       提交
     </van-button>
   </div>

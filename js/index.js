@@ -40,6 +40,9 @@ var vm = new Vue({
     this.getScan();
   },
   methods: {
+    submit(){
+      console.log(111)
+    },
     showMore() {
       this.isHide = false;
       this.isShow = true;
