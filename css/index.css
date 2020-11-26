@@ -163,3 +163,7 @@ input {
   font-size: 14px;
 }
 
+[v-cloak]{
+  display: none;
+}
+
