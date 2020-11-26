@@ -60,7 +60,7 @@ var vm = new Vue({
         this.willShow = true
       } else if (this.invoiceForm.type === "个人") {
         this.willShow = false
-        this.invoiceForm.purchaserName = "个人";
+        this.invoiceForm.purchaserName = "";
         this.invoiceForm.purchaserTaxpayerNumber = "";
         this.invoiceForm.address = "";
         this.invoiceForm.phone = "";
