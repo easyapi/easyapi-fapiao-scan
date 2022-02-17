@@ -1,5 +1,4 @@
-var vm = new Vue({
-  el: '#app',
+const appHtml = {
   data() {
     return {
       current: 0,
@@ -193,4 +192,20 @@ var vm = new Vue({
       });
     }
   }
-});
+}
+// 创建
+const app = Vue.createApp(appHtml)
+// 引入vant组件
+app.use(vant);
+// 自动注册 Lazyload 组件
+app.use(vant.Lazyload);
+app.use(vant.Button);
+app.use(vant.Grid);
+app.use(vant.GridItem);
+app.use(vant.NoticeBar);
+app.use(vant.Cell);
+app.use(vant.CellGroup);
+// 空状态
+app.use(vant.Empty);
+
+app.mount('#app');
