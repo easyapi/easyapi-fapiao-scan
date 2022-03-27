@@ -49,9 +49,6 @@ const appHtml = {
       this.isShow = false;
       this.isHide = true;
     },
-    submit() {
-      console.log(111)
-    },
     selectType() {
       localStorage.setItem("type", this.invoiceForm.type);
       if (this.invoiceForm.type === "企业") {
@@ -75,14 +72,22 @@ const appHtml = {
       if (r != null) return unescape(r[2]);
       return null;
     },
-    // 企业抬头查询
+    /**
+     * 企业抬头查询
+     */
     searchCompanyTitleList() {
+      if (this.invoiceForm.purchaserName.length < 4) {
+        return;
+      }
       axios.get("https://fapiao-api.easyapi.com/company/codes", {
         params: {
           accessToken: this.accessToken,
           name: this.invoiceForm.purchaserName
         }
       }).then(res => {
+        if (res.data.code === 0) {
+          return;
+        }
         this.searchList = res.data.content;
         this.dropDownShow = true;
         this.companyNameShow = ''
@@ -124,10 +129,10 @@ const appHtml = {
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
         params: {}
       }).then(res => {
-        if (res.data.content.state == -1 || res.data.content.state == -2) {
+        if (res.data.content.state === -1 || res.data.content.state === -2) {
           window.location.href = "expire.html";
         }
-        if (res.data.content.state == 1) {
+        if (res.data.content.state === 1) {
           window.location.href = "invoice.html?pdfUrl=" + res.data.content.invoice.pdfUrl + "&imgUrl=" + res.data.content.invoice.imgUrl;
         }
         this.scanContent = res.data.content;
@@ -138,24 +143,11 @@ const appHtml = {
         console.log(error)
       });
     },
-    // 提交开票
+    /**
+     * 提交开票
+     */
     makeInvoice() {
       this.disabled = false;
-      //手机号验证
-      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-      if (this.ifNeedMobile === true) {
-        if (this.invoiceForm.mobile === '') {
-          return alert("请输入手机号码");
-        } else if (!reg.test(this.invoiceForm.mobile)) {
-          return alert("手机格式不正确");
-        }
-      } else {
-        if (this.invoiceForm.mobile) {
-          if (!reg.test(this.invoiceForm.mobile)) {
-            return alert("手机格式不正确");
-          }
-        }
-      }
       //验证邮箱
       let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
       if (this.ifNeedEmail === true) {
@@ -168,6 +160,21 @@ const appHtml = {
         if (this.invoiceForm.email) {
           if (!regEmail.test(this.invoiceForm.email)) {
             return alert("邮箱格式不正确");
+          }
+        }
+      }
+      //手机号验证
+      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      if (this.ifNeedMobile === true) {
+        if (this.invoiceForm.mobile === '') {
+          return alert("请输入手机号码");
+        } else if (!reg.test(this.invoiceForm.mobile)) {
+          return alert("手机格式不正确");
+        }
+      } else {
+        if (this.invoiceForm.mobile) {
+          if (!reg.test(this.invoiceForm.mobile)) {
+            return alert("手机格式不正确");
           }
         }
       }

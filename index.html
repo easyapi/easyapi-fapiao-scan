@@ -32,8 +32,7 @@
           @focus="searchCompanyTitleList"
           @keyup="searchCompanyTitleList"
           @blur="inputBlur"
-          :rules="[{ required: true}]"
-        >
+          :rules="[{ required: true}]">
         </van-field>
         <div class="drop-down" v-if="dropDownShow">
           <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
@@ -43,8 +42,7 @@
           v-model="invoiceForm.purchaserTaxpayerNumber"
           label="税号"
           placeholder="请输入税号"
-          :rules="[{ required: true }]"
-        ></van-field>
+          :rules="[{ required: true }]"></van-field>
       </van-form>
       <van-field v-if="willShow"
                  v-show="isHide"
