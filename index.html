@@ -1,105 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="https://cdn.staticfile.org/vant/2.12.47/index.min.css"/>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/vant/2.12.47/index.min.css" />
   <title>扫码开票</title>
 </head>
+
 <body>
-<div id="app">
-  <div>
-    <van-notice-bar left-icon="volume-o">
-      您正在使用{{companyNameShow}}二维码扫描开票服务，请仔细确认开票
-      内容，一经开出无法退票重开。
-    </van-notice-bar>
-  </div>
-  <div>
-    <van-cell-group title="开票信息">
-      <van-cell title="抬头类型">
-        <van-radio-group v-model="invoiceForm.type" direction="horizontal" @change="selectType">
-          <van-radio name="企业">单位</van-radio>
-          <van-radio name="个人">个人/事业单位</van-radio>
-        </van-radio-group>
-      </van-cell>
-      <van-form>
-        <van-field
-          v-model="invoiceForm.purchaserName"
-          label="发票抬头" :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'"
-          @focus="searchCompanyTitleList"
-          @keyup="searchCompanyTitleList"
-          @blur="inputBlur"
-          :rules="[{ required: true}]">
-        </van-field>
-        <div class="drop-down" v-if="dropDownShow">
-          <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
+  <div id="app">
+    <div>
+      <van-notice-bar left-icon="volume-o">
+        您正在使用{{companyNameShow}}二维码扫描开票服务，请仔细确认开票
+        内容，一经开出无法退票重开。
+      </van-notice-bar>
+    </div>
+    <div>
+      <van-cell-group title="开票信息">
+        <van-cell title="抬头类型">
+          <van-radio-group v-model="invoiceForm.type" direction="horizontal" @change="selectType">
+            <van-radio name="企业">单位</van-radio>
+            <van-radio name="个人">个人/事业单位</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-form>
+          <van-field v-model="invoiceForm.purchaserName" label="发票抬头"
+            :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'" @focus="searchCompanyTitleList"
+            @keyup="searchCompanyTitleList" @blur="inputBlur" :rules="[{ required: true}]">
+          </van-field>
+          <div class="drop-down" v-if="dropDownShow">
+            <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
+          </div>
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserTaxpayerNumber" label="税号" placeholder="请输入税号"
+            :rules="[{ required: true }]"></van-field>
+        </van-form>
+        <van-field v-if="willShow" v-show="isHide" label="更多" placeholder="地址、电话、开户行等" @click="purchaserMore"
+          right-icon="arrow-down"></van-field>
+        <div v-show="isShow">
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" placeholder="请输入地址"
+            right-icon="arrow-up" @click-right-icon="purchaserMoreHide"></van-field>
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号" placeholder="请输入开户行账号">
+          </van-field>
         </div>
-        <van-field
-          v-if="willShow"
-          v-model="invoiceForm.purchaserTaxpayerNumber"
-          label="税号"
-          placeholder="请输入税号"
-          :rules="[{ required: true }]"></van-field>
-      </van-form>
-      <van-field v-if="willShow"
-                 v-show="isHide"
-                 label="更多"
-                 placeholder="地址、电话、开户行等"
-                 @click="purchaserMore"
-                 right-icon="arrow-down"
-      ></van-field>
-      <div v-show="isShow">
-        <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" placeholder="请输入地址"
-                   right-icon="arrow-up" @click-right-icon="purchaserMoreHide"></van-field>
-        <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
-        <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
-        <van-field v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号"
-                   placeholder="请输入开户行账号"></van-field>
-      </div>
-    </van-cell-group>
+      </van-cell-group>
+    </div>
+    <div>
+      <van-cell-group title="发票内容">
+        <div class="invoice-content">
+          <ul class="contents-title">
+            <li style="width: 24%">商品名称</li>
+            <li style="width: 24%">规格型号</li>
+            <li>单位</li>
+            <li>数量</li>
+            <li>单价</li>
+          </ul>
+          <ul class="contents-content" v-for="content in scanList">
+            <li style="width: 24%;line-height: 15px;padding-top:12px">{{content.name}}</li>
+            <li style="width: 24%">{{content.model}}</li>
+            <li>{{content.unit}}</li>
+            <li>{{content.number}}</li>
+            <li>{{content.price}}</li>
+          </ul>
+        </div>
+        <van-field v-model="scanContent.price" label="发票金额" placeholder="" readonly></van-field>
+        <van-field v-model="invoiceForm.remark" label="备注" placeholder=""></van-field>
+      </van-cell-group>
+    </div>
+    <div>
+      <van-cell-group title="接收方式">
+        <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号"></van-field>
+        <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码"></van-field>
+      </van-cell-group>
+    </div>
+    <div style="margin: 16px;">
+      <van-button @click="makeInvoice" round block type="info" native-type="button" :disabled="disabled">
+        提交
+      </van-button>
+    </div>
   </div>
-  <div>
-    <van-cell-group title="发票内容">
-      <div class="invoice-content">
-        <ul class="contents-title">
-          <li style="width: 24%">商品名称</li>
-          <li style="width: 24%">规格型号</li>
-          <li>单位</li>
-          <li>数量</li>
-          <li>单价</li>
-        </ul>
-        <ul class="contents-content" v-for="content in scanList">
-          <li style="width: 24%;line-height: 15px;padding-top:12px">{{content.name}}</li>
-          <li style="width: 24%">{{content.model}}</li>
-          <li>{{content.unit}}</li>
-          <li>{{content.number}}</li>
-          <li>{{content.price}}</li>
-        </ul>
-      </div>
-      <van-field v-model="scanContent.price" label="发票金额" placeholder="" readonly></van-field>
-      <van-field v-model="invoiceForm.remark" label="备注" placeholder=""></van-field>
-    </van-cell-group>
-  </div>
-  <div>
-    <van-cell-group title="接收方式">
-      <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号"></van-field>
-      <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码"></van-field>
-    </van-cell-group>
-  </div>
-  <div style="margin: 16px;">
-    <van-button @click="makeInvoice" round block type="info" native-type="button" :disabled="disabled">
-      提交
-    </van-button>
-  </div>
-</div>
-<script src="https://cdn.staticfile.org/vue/3.2.36/vue.global.min.js"></script>
-<script src="https://cdn.staticfile.org/vant/3.4.9/vant.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="js/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue/3.2.36/vue.global.min.js"></script>
+  <script src="https://cdn.staticfile.org/vant/3.4.9/vant.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="js/index.js"></script>
 </body>
+
 </html>
-
-
