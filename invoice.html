@@ -33,33 +33,33 @@
 </head>
 
 <body>
-  <div class="title">
-    <h1>发票开具中</h1>
-  </div>
-  <div>
-    <p class="preview">预览发票</p>
-  </div>
-  <div class="content">
-    <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
-    <p><a id="save" class="button" href="">保存图片</a></p>
-  </div>
-  <script src="https://cdn.staticfile.org/vue/3.2.36/vue.global.min.js"></script>
-  <script src="https://cdn.staticfile.org/vant/3.4.9/vant.min.js"></script>
-  <script src="js/flexible.js"></script>
-  <script src="js/index.js"></script>
-  <script></script>
-  <script>
-    document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
+<div class="title">
+  <h1>发票开具中</h1>
+</div>
+<div>
+  <p class="preview">预览发票</p>
+</div>
+<div class="content">
+  <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
+  <p><a id="save" class="button" href="">保存图片</a></p>
+</div>
+<script src="https://cdn.staticfile.org/vue/3.2.36/vue.global.min.js"></script>
+<script src="https://cdn.staticfile.org/vant/3.4.9/vant.min.js"></script>
+<script src="js/flexible.js"></script>
+<script src="js/index.js"></script>
+<script></script>
+<script>
+  document.getElementById("pdfUrl").href = this.getQueryString("pdfUrl");
 
-    // 获取地址栏URL参数
-    function getQueryString(name) {
-      let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-      let r = window.location.search.substr(1).match(reg);
-      if (r != null) return unescape(r[2]);
-      return null;
-    }
-    
-  </script>
+  // 获取地址栏URL参数
+  function getQueryString(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
+
+</script>
 </body>
 
 </html>
