@@ -3,6 +3,7 @@ const appHtml = {
     return {
       current: 0,
       invoiceForm: {
+        outOrderNo: 'MA' + new Date().getTime(),
         type: "",
         purchaserName: '',
         purchaserTaxpayerNumber: '',
