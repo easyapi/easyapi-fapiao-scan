@@ -1,4 +1,5 @@
 const appHtml = {
+
   data() {
     return {
       current: 0,
@@ -35,21 +36,29 @@ const appHtml = {
   },
   created() {
     // 获取二维码的code
-    this.code = this.GetQueryString("code");
+    this.code = getQueryString("code");
+    console.log(this.code)
     localStorage.setItem("accessToken", this.accessToken);
     this.getScan();
   },
   methods: {
-    //展示更多
+    /**
+     * 展示更多
+     */
     purchaserMore() {
       this.isShow = true;
       this.isHide = false;
     },
-    //隐藏
+    /**
+     * 隐藏
+     */
     purchaserMoreHide() {
       this.isShow = false;
       this.isHide = true;
     },
+    /**
+     *
+     */
     selectType() {
       localStorage.setItem("type", this.invoiceForm.type);
       if (this.invoiceForm.type === "企业") {
@@ -65,13 +74,6 @@ const appHtml = {
         this.invoiceForm.purchaserBankAccount = "";
         this.invoiceForm.companyId = "";
       }
-    },
-    // 获取地址栏URL参数
-    GetQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-      var r = window.location.search.substr(1).match(reg);
-      if (r != null) return unescape(r[2]);
-      return null;
     },
     /**
      * 企业抬头查询
@@ -107,7 +109,9 @@ const appHtml = {
       this.dropDownShow = false;
       this.companyNameShow = this.invoiceForm.purchaserName
     },
-    //发票抬头失焦后
+    /**
+     * 发票抬头失焦后
+     */
     inputBlur() {
       this.dropDownShow = false;
       let has;
@@ -125,7 +129,9 @@ const appHtml = {
         this.invoiceForm.purchaserBankAccount = '';
       }
     },
-    // 获取获取二维码小票信息
+    /**
+     * 获取获取二维码小票信息
+     */
     getScan() {
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
         params: {}
