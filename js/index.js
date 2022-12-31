@@ -37,7 +37,6 @@ const appHtml = {
   created() {
     // 获取二维码的code
     this.code = getQueryString("code");
-    console.log(this.code)
     localStorage.setItem("accessToken", this.accessToken);
     this.getScan();
   },
