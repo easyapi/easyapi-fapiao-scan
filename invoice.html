@@ -32,7 +32,7 @@
   </style>
 </head>
 
-<body id="app">
+<body>
 <div class="title">
   <h1>发票开具中</h1>
 </div>
@@ -41,7 +41,7 @@
 </div>
 <div class="content">
   <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
-  <p><a id="save" class="button" href="">保存图片</a></p>
+  <p><a id="imgUrl" class="button" href="">保存图片</a></p>
 </div>
 <script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.min.js"></script>
 <script src="https://cdn.staticfile.org/vant/4.0.6/vant.min.js"></script>
@@ -49,6 +49,7 @@
 <script src="js/param.js"></script>
 <script>
   document.getElementById("pdfUrl").href = getQueryString("pdfUrl");
+  document.getElementById("imgUrl").href = getQueryString("imgUrl");
 </script>
 </body>
 

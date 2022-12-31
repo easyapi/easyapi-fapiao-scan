@@ -52,20 +52,20 @@
   </div>
   <div>
     <van-cell-group title="发票内容">
-      <div class="invoice-content">
-        <ul class="contents-title">
+      <div>
+        <ul class="item-title">
           <li style="width: 24%">商品名称</li>
           <li style="width: 24%">规格型号</li>
           <li>单位</li>
           <li>数量</li>
           <li>单价</li>
         </ul>
-        <ul class="contents-content" v-for="content in scanList">
-          <li style="width: 24%;line-height: 15px;padding-top:12px">{{content.name}}</li>
-          <li style="width: 24%">{{content.model}}</li>
-          <li>{{content.unit}}</li>
-          <li>{{content.number}}</li>
-          <li>{{content.price}}</li>
+        <ul class="item-row" v-for="item in scanList">
+          <li style="width: 24%;line-height: 15px;padding-top:12px">{{item.name}}</li>
+          <li style="width: 24%">{{item.model}}</li>
+          <li>{{item.unit}}</li>
+          <li>{{item.number}}</li>
+          <li>{{item.price}}</li>
         </ul>
       </div>
       <van-field v-model="scanContent.price" label="发票金额" placeholder="" readonly></van-field>
@@ -78,7 +78,7 @@
       <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码"></van-field>
     </van-cell-group>
   </div>
-  <div style="margin: 16px;">
+  <div class="mt-15">
     <van-button @click="makeInvoice" round block type="info" native-type="button" :disabled="disabled">
       提交
     </van-button>
