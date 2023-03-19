@@ -143,7 +143,7 @@ const appHtml = {
         }
         this.scanContent = res.data.content;
         this.accessToken = this.scanContent.accessToken;
-        this.scanList = res.data.content.invoiceScanItems;
+        this.scanList = res.data.content.scanItems;
         this.invoiceForm.remark = this.scanContent.remark;
       }).catch(error => {
         console.log(error)
