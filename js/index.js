@@ -67,8 +67,8 @@ const appHtml = {
         this.willShow = false
         this.invoiceForm.purchaserName = "";
         this.invoiceForm.purchaserTaxpayerNumber = "";
-        this.invoiceForm.address = "";
-        this.invoiceForm.phone = "";
+        this.invoiceForm.purchaserAddress = "";
+        this.invoiceForm.purchaserPhone = "";
         this.invoiceForm.purchaserBank = "";
         this.invoiceForm.purchaserBankAccount = "";
         this.invoiceForm.companyId = "";
@@ -101,10 +101,10 @@ const appHtml = {
     chooseCompanyTitle(index) {
       this.invoiceForm.purchaserName = this.searchList[index].name;
       this.invoiceForm.purchaserTaxpayerNumber = this.searchList[index].taxNumber;
-      this.invoiceForm.address = this.searchList[index].address;
-      this.invoiceForm.phone = this.searchList[index].phone;
-      this.invoiceForm.bank = this.searchList[index].bank;
-      this.invoiceForm.bankAccount = this.searchList[index].bankAccount;
+      this.invoiceForm.purchaserAddress = this.searchList[index].address;
+      this.invoiceForm.purchaserPhone = this.searchList[index].phone;
+      this.invoiceForm.purchaserBank = this.searchList[index].bank;
+      this.invoiceForm.purchaserBankAccount = this.searchList[index].bankAccount;
       this.dropDownShow = false;
       this.companyNameShow = this.invoiceForm.purchaserName
     },
@@ -189,10 +189,10 @@ const appHtml = {
       this.upResult.addrMobile = this.invoiceForm.mobile;
       this.upResult.purchaserName = this.invoiceForm.purchaserName;
       this.upResult.purchaserTaxpayerNumber = this.invoiceForm.purchaserTaxpayerNumber;
-      this.upResult.purchaserAddress = this.invoiceForm.address;
-      this.upResult.purchaserPhone = this.invoiceForm.phone;
-      this.upResult.purchaserBank = this.invoiceForm.bank;
-      this.upResult.purchaserBankAccount = this.invoiceForm.bankAccount;
+      this.upResult.purchaserAddress = this.invoiceForm.purchaserAddress;
+      this.upResult.purchaserPhone = this.invoiceForm.purchaserPhone;
+      this.upResult.purchaserBank = this.invoiceForm.purchaserBank;
+      this.upResult.purchaserBankAccount = this.invoiceForm.purchaserBankAccount;
       this.upResult.remark = this.invoiceForm.remark;
       this.upResult.accessToken = this.accessToken;
       this.upResult.type = this.sendType;
@@ -203,7 +203,7 @@ const appHtml = {
         this.disabled = "true";
       }).catch(error => {
         console.log(error);
-        alert("开票失败，请检查和填写信息完整！");
+        alert(error.response.data.message);
       });
     }
   }
