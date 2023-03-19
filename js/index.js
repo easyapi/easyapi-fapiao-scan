@@ -5,7 +5,7 @@ const appHtml = {
       current: 0,
       invoiceForm: {
         outOrderNo: 'MA' + new Date().getTime(),
-        type: "",
+        type: "企业",
         purchaserName: '',
         purchaserTaxpayerNumber: '',
         purchaserAddress: '',
@@ -101,10 +101,10 @@ const appHtml = {
     chooseCompanyTitle(index) {
       this.invoiceForm.purchaserName = this.searchList[index].name;
       this.invoiceForm.purchaserTaxpayerNumber = this.searchList[index].taxNumber;
-      this.address = this.searchList[index].address;
-      this.phone = this.searchList[index].phone;
-      this.bank = this.searchList[index].bank;
-      this.bankAccount = this.searchList[index].bankAccount;
+      this.invoiceForm.address = this.searchList[index].address;
+      this.invoiceForm.phone = this.searchList[index].phone;
+      this.invoiceForm.bank = this.searchList[index].bank;
+      this.invoiceForm.bankAccount = this.searchList[index].bankAccount;
       this.dropDownShow = false;
       this.companyNameShow = this.invoiceForm.purchaserName
     },
@@ -184,14 +184,16 @@ const appHtml = {
           }
         }
       }
+      this.upResult.outOrderNo = this.invoiceForm.outOrderNo;
       this.upResult.email = this.invoiceForm.email;
       this.upResult.addrMobile = this.invoiceForm.mobile;
       this.upResult.purchaserName = this.invoiceForm.purchaserName;
       this.upResult.purchaserTaxpayerNumber = this.invoiceForm.purchaserTaxpayerNumber;
-      this.upResult.purchaserAddress = this.address;
-      this.upResult.purchaserPhone = this.phone;
-      this.upResult.purchaserBank = this.bank;
-      this.upResult.purchaserBankAccount = this.bankAccount;
+      this.upResult.purchaserAddress = this.invoiceForm.address;
+      this.upResult.purchaserPhone = this.invoiceForm.phone;
+      this.upResult.purchaserBank = this.invoiceForm.bank;
+      this.upResult.purchaserBankAccount = this.invoiceForm.bankAccount;
+      this.upResult.remark = this.invoiceForm.remark;
       this.upResult.accessToken = this.accessToken;
       this.upResult.type = this.sendType;
       axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make",
