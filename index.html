@@ -23,7 +23,7 @@
         请选择发票类型
       </p>
       <div class="invoice-type-item" v-for="(item, index) in invoiceCategoryList" :key="index"
-        @click="changeInvoiceCategories(item)"
+        @click="changeInvoiceCategory(item)"
         :style="invoiceForm.category === item ? `border:2px solid ${invoiceTag(item).color}` : 'border:2px solid #f8f8f8' ">
         <van-tag class="invoice-tag" size="large" type="primary"
           :color="invoiceForm.category === item ? invoiceTag(item).color : '#969799'">

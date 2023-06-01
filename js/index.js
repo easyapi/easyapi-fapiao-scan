@@ -20,7 +20,6 @@ const appHtml = {
       isHide: true,
       isShow: false,
       dropDownShow: false,
-      accessToken: '',
       searchList: [],
       invoiceItems: [],
       invoicePrice: 0,
@@ -74,8 +73,7 @@ const appHtml = {
           bgColor: '#f8f4e5'
         }
     },
-
-    changeInvoiceCategories(row) {
+    changeInvoiceCategory(row) {
       this.invoiceForm.category = row
     },
     /**
@@ -91,6 +89,19 @@ const appHtml = {
     purchaserMoreHide() {
       this.isShow = false;
       this.isHide = true;
+    },
+    /**
+     * 重新获取accessToken
+     */
+    retrieveAccessToken() {
+      let that = this
+      return new Promise(function (resolve) {
+        axios.get("https://fapiao-api.easyapi.com/scan/code/" + that.code).then(res => {
+          if (res.data.code === 1) {
+            resolve(res.data.content.accessToken);
+          }
+        })
+      });
     },
     /**
      * 选择抬头类型
@@ -113,13 +124,14 @@ const appHtml = {
     /**
      * 企业抬头查询
      */
-    searchCompanyTitleList() {
+    async searchCompanyTitleList() {
       if (this.invoiceForm.purchaserName.length < 4) {
         return;
       }
+      let accessToken = await this.retrieveAccessToken().then()
       axios.get("https://fapiao-api.easyapi.com/company/codes", {
         params: {
-          accessToken: this.accessToken,
+          accessToken: accessToken,
           name: this.invoiceForm.purchaserName
         }
       }).then(res => {
@@ -190,10 +202,8 @@ const appHtml = {
         this.invoiceForm.remark = data.remark;
         this.invoiceForm.type = '企业'
         this.invoicePrice = data.price ? data.price : 0
-        this.accessToken = data.accessToken;
-        localStorage.setItem("accessToken", this.accessToken);
         this.invoiceItems = data.items;
-        this.getInvoiceCategoryList()
+        this.getInvoiceCategoryList(data.accessToken)
       }).catch(error => {
         vant.showToast(error.response.data.message)
       });
@@ -201,10 +211,10 @@ const appHtml = {
     /**
      * 获取发票类型
      */
-    getInvoiceCategoryList() {
+    getInvoiceCategoryList(accessToken) {
       axios.get("https://fapiao-api.easyapi.com/setting/find", {
         params: {
-          accessToken: this.accessToken,
+          accessToken: accessToken,
           fieldKeys: 'h5_pc_invoice_categories'
         }
       }).then(res => {
@@ -238,15 +248,16 @@ const appHtml = {
       vant.showConfirmDialog({
         title: '提示',
         message: '确认抬头和金额正确并申请开票吗？',
-      }).then(() => {
+      }).then(async () => {
         vant.showLoadingToast({
           message: '开票中...',
           forbidClick: true,
           duration: 0,
         })
+        let accessToken = await this.retrieveAccessToken().then()
         let params = {
           ...this.invoiceForm,
-          accessToken: this.accessToken
+          accessToken: accessToken
         }
         axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make", params).then(res => {
           vant.closeToast()
