@@ -2,17 +2,17 @@ const appHtml = {
 
   data() {
     return {
-      current: 0,
       invoiceForm: {
         outOrderNo: 'MA' + new Date().getTime(),
         type: "企业",
+        category: '',
         purchaserName: '',
         purchaserTaxpayerNumber: '',
         purchaserAddress: '',
         purchaserPhone: '',
         purchaserBank: '',
         purchaserBankAccount: '',
-        mobile: '',
+        addrMobile: '',
         email: '',
         remark: '',
       },
@@ -21,26 +21,63 @@ const appHtml = {
       isShow: false,
       dropDownShow: false,
       accessToken: '',
-      ifNeedMobile: true,
-      ifNeedEmail: true,
-      nameTemp: '',
-      upResult: {},
       searchList: [],
-      sendType: '企业',
-      scanList: '',
-      scanContent: {price: 0},
+      invoiceItems: [],
+      invoicePrice: 0,
       code: '',
-      disabled: false,
-      companyNameShow: ''
+      companyNameShow: '',
+      invoiceCategoryList: [],
+      selectInvoiceCategory: ''
     }
   },
   created() {
     // 获取二维码的code
     this.code = getQueryString("code");
-    localStorage.setItem("accessToken", this.accessToken);
     this.getScan();
   },
   methods: {
+    invoiceTag(invoiceCategory) {
+      if (invoiceCategory === '增值税电子普通发票')
+        return {
+          name: '电普',
+          color: '#00b2c8',
+          bgColor: '#f2fbff'
+        }
+      if (invoiceCategory === '增值税普通发票')
+        return {
+          name: '普票',
+          color: '#1950a5',
+          bgColor: '#edf1fa'
+        }
+      if (invoiceCategory === '增值税电子专用发票')
+        return {
+          name: '电专',
+          color: '#266253',
+          bgColor: '#dbf5eb'
+        }
+      if (invoiceCategory === '增值税专用发票')
+        return {
+          name: '专票',
+          color: '#266253',
+          bgColor: '#dbf5eb'
+        }
+      if (invoiceCategory === '全电电子普通发票')
+        return {
+          name: '全电普',
+          color: '#00b2c8',
+          bgColor: '#f2fbff'
+        }
+      if (invoiceCategory === '全电电子专用发票')
+        return {
+          name: '全电专',
+          color: '#665823',
+          bgColor: '#f8f4e5'
+        }
+    },
+
+    changeInvoiceCategories(row) {
+      this.invoiceForm.category = row
+    },
     /**
      * 展示更多
      */
@@ -56,12 +93,11 @@ const appHtml = {
       this.isHide = true;
     },
     /**
-     *
+     * 选择抬头类型
      */
     selectType() {
       localStorage.setItem("type", this.invoiceForm.type);
       if (this.invoiceForm.type === "企业") {
-        this.invoiceForm.purchaserName = "";
         this.willShow = true
       } else if (this.invoiceForm.type === "个人") {
         this.willShow = false
@@ -94,10 +130,13 @@ const appHtml = {
         this.dropDownShow = true;
         this.companyNameShow = ''
       }).catch(error => {
-        console.log(error);
+        vant.showToast(error.response.data.message)
         this.companyNameShow = ''
       });
     },
+    /**
+     * 选择发票抬头
+     */
     chooseCompanyTitle(index) {
       this.invoiceForm.purchaserName = this.searchList[index].name;
       this.invoiceForm.purchaserTaxpayerNumber = this.searchList[index].taxNumber;
@@ -132,6 +171,11 @@ const appHtml = {
      * 获取获取二维码小票信息
      */
     getScan() {
+      vant.showLoadingToast({
+        message: '加载中...',
+        forbidClick: true,
+        duration: 0,
+      })
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
         params: {}
       }).then(res => {
@@ -141,70 +185,77 @@ const appHtml = {
         if (res.data.content.state === 1) {
           window.location.href = "invoice.html?pdfUrl=" + res.data.content.invoice.pdfUrl + "&imgUrl=" + res.data.content.invoice.imgUrl;
         }
-        this.scanContent = res.data.content;
-        this.accessToken = this.scanContent.accessToken;
-        this.scanList = res.data.content.items;
-        this.invoiceForm.remark = this.scanContent.remark;
+        let data = res.data.content
+        if (data.invoice) this.invoiceForm = data.invoice
+        this.invoiceForm.remark = data.remark;
+        this.invoiceForm.type = '企业'
+        this.invoicePrice = data.price ? data.price : 0
+        this.accessToken = data.accessToken;
+        localStorage.setItem("accessToken", this.accessToken);
+        this.invoiceItems = data.items;
+        this.getInvoiceCategoryList()
       }).catch(error => {
-        console.log(error)
+        vant.showToast(error.response.data.message)
       });
+    },
+    /**
+     * 获取发票类型
+     */
+    getInvoiceCategoryList() {
+      axios.get("https://fapiao-api.easyapi.com/setting/find", {
+        params: {
+          accessToken: this.accessToken,
+          fieldKeys: 'h5_pc_invoice_categories'
+        }
+      }).then(res => {
+        vant.closeToast()
+        if (res.data.code === 1) {
+          this.invoiceCategoryList = JSON.parse(res.data.content[0].fieldValue)
+        } else {
+          this.invoiceCategoryList = []
+        }
+      }).catch(error => {
+        vant.closeToast()
+        vant.showToast(error.response.data.message)
+      })
     },
     /**
      * 提交开票
      */
     makeInvoice() {
-      this.disabled = false;
-      //验证邮箱
-      let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-      if (this.ifNeedEmail === true) {
-        if (this.invoiceForm.email === '') {
-          return alert("请输入邮箱");
-        } else if (!regEmail.test(this.invoiceForm.email)) {
-          return alert("邮箱格式不正确");
-        }
-      } else {
-        if (this.invoiceForm.email) {
-          if (!regEmail.test(this.invoiceForm.email)) {
-            return alert("邮箱格式不正确");
-          }
+      if (!this.invoiceForm.purchaserName) {
+        return vant.showToast('请输入发票抬头')
+      }
+      if (!this.invoiceForm.category) {
+        return vant.showToast('请选择发票类型')
+      }
+      if (this.invoiceForm.type === '企业') {
+        if (!this.invoiceForm.purchaserTaxpayerNumber) {
+          return vant.showToast('请输入税号')
         }
       }
-      //手机号验证
-      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-      if (this.ifNeedMobile === true) {
-        if (this.invoiceForm.mobile === '') {
-          return alert("请输入手机号码");
-        } else if (!reg.test(this.invoiceForm.mobile)) {
-          return alert("手机格式不正确");
+      if (!checkEmailMobile(this.invoiceForm)) return
+      vant.showConfirmDialog({
+        title: '提示',
+        message: '确认抬头和金额正确并申请开票吗？',
+      }).then(() => {
+        vant.showLoadingToast({
+          message: '开票中...',
+          forbidClick: true,
+          duration: 0,
+        })
+        let params = {
+          ...this.invoiceForm,
+          accessToken: this.accessToken
         }
-      } else {
-        if (this.invoiceForm.mobile) {
-          if (!reg.test(this.invoiceForm.mobile)) {
-            return alert("手机格式不正确");
-          }
-        }
-      }
-      this.upResult.outOrderNo = this.invoiceForm.outOrderNo;
-      this.upResult.email = this.invoiceForm.email;
-      this.upResult.addrMobile = this.invoiceForm.mobile;
-      this.upResult.purchaserName = this.invoiceForm.purchaserName;
-      this.upResult.purchaserTaxpayerNumber = this.invoiceForm.purchaserTaxpayerNumber;
-      this.upResult.purchaserAddress = this.invoiceForm.purchaserAddress;
-      this.upResult.purchaserPhone = this.invoiceForm.purchaserPhone;
-      this.upResult.purchaserBank = this.invoiceForm.purchaserBank;
-      this.upResult.purchaserBankAccount = this.invoiceForm.purchaserBankAccount;
-      this.upResult.remark = this.invoiceForm.remark;
-      this.upResult.accessToken = this.accessToken;
-      this.upResult.type = this.sendType;
-      axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make",
-        this.upResult
-      ).then(res => {
-        window.location.href = "success.html";
-        this.disabled = "true";
-      }).catch(error => {
-        console.log(error);
-        alert(error.response.data.message);
-      });
+        axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make", params).then(res => {
+          vant.closeToast()
+          window.location.href = "success.html";
+        }).catch(error => {
+          vant.closeToast()
+          vant.showToast(error.response.data.message);
+        });
+      })
     }
   }
 }
@@ -220,6 +271,7 @@ app.use(vant.GridItem);
 app.use(vant.NoticeBar);
 app.use(vant.Cell);
 app.use(vant.CellGroup);
+
 // 空状态
 app.use(vant.Empty);
 
