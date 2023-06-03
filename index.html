@@ -14,8 +14,7 @@
 <body>
   <div id="app">
     <van-notice-bar left-icon="volume-o">
-      您正在使用{{companyNameShow}}二维码扫描开票服务，请仔细确认开票
-      内容，一经开出无法退票重开。
+      您正在使用{{shopName}}二维码扫描开票服务，请仔细确认开票内容，一经开出无法退票重开。
     </van-notice-bar>
 
     <div class="invoice-type" v-if="invoiceCategoryList.length > 0">
@@ -74,7 +73,7 @@
           <li>数量</li>
           <li>单价</li>
         </ul>
-        <ul class="item-row" v-for="item in invoiceItems">
+        <ul class="item-row" v-for="item in scanItems">
           <li style="width: 24%;line-height: 15px;padding-top:12px">{{item.name}}</li>
           <li style="width: 24%">{{item.model}}</li>
           <li>{{item.unit}}</li>

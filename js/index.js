@@ -21,10 +21,10 @@ const appHtml = {
       isShow: false,
       dropDownShow: false,
       searchList: [],
-      invoiceItems: [],
+      scanItems: [],
       invoicePrice: 0,
       code: '',
-      companyNameShow: '',
+      shopName: '',//商户名称
       invoiceCategoryList: [],
       selectInvoiceCategory: ''
     }
@@ -140,10 +140,8 @@ const appHtml = {
         }
         this.searchList = res.data.content;
         this.dropDownShow = true;
-        this.companyNameShow = ''
       }).catch(error => {
         vant.showToast(error.response.data.message)
-        this.companyNameShow = ''
       });
     },
     /**
@@ -157,7 +155,6 @@ const appHtml = {
       this.invoiceForm.purchaserBank = this.searchList[index].bank;
       this.invoiceForm.purchaserBankAccount = this.searchList[index].bankAccount;
       this.dropDownShow = false;
-      this.companyNameShow = this.invoiceForm.purchaserName
     },
     /**
      * 发票抬头失焦后
@@ -198,11 +195,12 @@ const appHtml = {
         if (data.state === 1) {
           window.location.href = "invoice.html?pdfUrl=" + data.invoice.pdfUrl + "&imgUrl=" + data.invoice.imgUrl;
         }
+        this.shopName = data.shopName
         if (data.invoice) this.invoiceForm = data.invoice
         this.invoiceForm.remark = data.remark;
         this.invoiceForm.type = '企业'
         this.invoicePrice = data.price ? data.price : 0
-        this.invoiceItems = data.items;
+        this.scanItems = data.items;
         this.getInvoiceCategoryList(data.accessToken)
       }).catch(error => {
         vant.showToast(error.response.data.message)
