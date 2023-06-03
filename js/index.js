@@ -91,9 +91,9 @@ const appHtml = {
       this.isHide = true;
     },
     /**
-     * 重新获取accessToken
+     * 获取accessToken
      */
-    retrieveAccessToken() {
+    getAccessToken() {
       let that = this
       return new Promise(function (resolve) {
         axios.get("https://fapiao-api.easyapi.com/scan/code/" + that.code).then(res => {
@@ -128,7 +128,7 @@ const appHtml = {
       if (this.invoiceForm.purchaserName.length < 4) {
         return;
       }
-      let accessToken = await this.retrieveAccessToken().then()
+      let accessToken = await this.getAccessToken().then()
       axios.get("https://fapiao-api.easyapi.com/company/codes", {
         params: {
           accessToken: accessToken,
@@ -191,13 +191,13 @@ const appHtml = {
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
         params: {}
       }).then(res => {
-        if (res.data.content.state === -1 || res.data.content.state === -2) {
+        let data = res.data.content
+        if (data.state === -1 || data.state === -2) {
           window.location.href = "expire.html";
         }
-        if (res.data.content.state === 1) {
-          window.location.href = "invoice.html?pdfUrl=" + res.data.content.invoice.pdfUrl + "&imgUrl=" + res.data.content.invoice.imgUrl;
+        if (data.state === 1) {
+          window.location.href = "invoice.html?pdfUrl=" + data.invoice.pdfUrl + "&imgUrl=" + data.invoice.imgUrl;
         }
-        let data = res.data.content
         if (data.invoice) this.invoiceForm = data.invoice
         this.invoiceForm.remark = data.remark;
         this.invoiceForm.type = '企业'
@@ -233,11 +233,11 @@ const appHtml = {
      * 提交开票
      */
     makeInvoice() {
-      if (!this.invoiceForm.purchaserName) {
-        return vant.showToast('请输入发票抬头')
-      }
       if (!this.invoiceForm.category) {
         return vant.showToast('请选择发票类型')
+      }
+      if (!this.invoiceForm.purchaserName) {
+        return vant.showToast('请输入发票抬头')
       }
       if (this.invoiceForm.type === '企业') {
         if (!this.invoiceForm.purchaserTaxpayerNumber) {
@@ -254,14 +254,15 @@ const appHtml = {
           forbidClick: true,
           duration: 0,
         })
-        let accessToken = await this.retrieveAccessToken().then()
-        let params = {
+        //重新获取accessToken
+        let accessToken = await this.getAccessToken().then()
+        let data = {
           ...this.invoiceForm,
           accessToken: accessToken
         }
-        axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make", params).then(res => {
+        axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make", data).then(res => {
           vant.closeToast()
-          window.location.href = "success.html";
+          window.location.href = "submit.html";
         }).catch(error => {
           vant.closeToast()
           vant.showToast(error.response.data.message);
