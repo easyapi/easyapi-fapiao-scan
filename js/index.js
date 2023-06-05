@@ -24,9 +24,8 @@ const appHtml = {
       scanItems: [],
       invoicePrice: 0,
       code: '',
-      shopName: '',//商户名称
-      invoiceCategoryList: [],
-      selectInvoiceCategory: ''
+      shopName: '', //商户名称
+      invoiceCategoryList: []
     }
   },
   created() {
@@ -183,6 +182,7 @@ const appHtml = {
       vant.showLoadingToast({
         message: '加载中...',
         forbidClick: true,
+        overlay: true,
         duration: 0,
       })
       axios.get("https://fapiao-api.easyapi.com/scan/code/" + this.code, {
@@ -250,6 +250,7 @@ const appHtml = {
         vant.showLoadingToast({
           message: '开票中...',
           forbidClick: true,
+          overlay: true,
           duration: 0,
         })
         //重新获取accessToken
