@@ -219,6 +219,7 @@ const appHtml = {
         vant.closeToast()
         if (res.data.code === 1) {
           this.invoiceCategoryList = JSON.parse(res.data.content[0].fieldValue)
+          this.changeInvoiceCategory(this.invoiceCategoryList[0])
         } else {
           this.invoiceCategoryList = []
         }
