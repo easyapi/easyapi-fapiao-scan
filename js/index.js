@@ -193,7 +193,7 @@ const appHtml = {
           window.location.href = "expire.html";
         }
         if (data.state === 1) {
-          window.location.href = "invoice.html?pdfUrl=" + data.invoice.pdfUrl + "&imgUrl=" + data.invoice.imgUrl;
+          window.location.href = "invoice.html?pdfUrl=" + data.invoice.electronicInvoiceUrl + "&imgUrl=" + data.invoice.electronicInvoiceImg;
         }
         this.shopName = data.shopName
         if (data.invoice) this.invoiceForm = data.invoice
