@@ -31,7 +31,7 @@ function checkEmailMobile(data) {
     return false
   }
   // 手机号验证
-  if (data.addrMobile && !validMobile(data.addrMobile)) {
+  if (data.mobile && !validMobile(data.mobile)) {
     vant.showToast('手机号码格式不正确')
     return false
   }

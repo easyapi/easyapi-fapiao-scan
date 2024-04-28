@@ -12,7 +12,7 @@ const appHtml = {
         purchaserPhone: '',
         purchaserBank: '',
         purchaserBankAccount: '',
-        addrMobile: '',
+        mobile: '',
         email: '',
         remark: '',
       },
