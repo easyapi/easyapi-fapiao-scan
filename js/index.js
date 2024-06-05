@@ -25,7 +25,9 @@ const appHtml = {
       invoicePrice: 0,
       code: '',
       shopName: '', //商户名称
-      invoiceCategoryList: []
+      invoiceCategoryList: [],
+      ifNeedMobile: false,
+      ifNeedEmail: false
     }
   },
   created() {
@@ -135,18 +137,19 @@ const appHtml = {
         }
       }).then(res => {
         if (res.data.code === 0) {
+          this.dropDownShow = false;
           return;
         }
         this.searchList = res.data.content;
         this.dropDownShow = true;
       }).catch(error => {
-        vant.showToast(error.response.data.message)
+        this.dropDownShow = false;
       });
     },
     /**
      * 选择发票抬头
      */
-    chooseCompanyTitle(index) {
+    chooseCompany(index) {
       this.invoiceForm.purchaserName = this.searchList[index].name;
       this.invoiceForm.purchaserTaxpayerNumber = this.searchList[index].taxNumber;
       this.invoiceForm.purchaserAddress = this.searchList[index].address;
@@ -213,13 +216,23 @@ const appHtml = {
       axios.get("https://fapiao-api.easyapi.com/setting/find", {
         params: {
           accessToken: accessToken,
-          fieldKeys: 'h5_pc_invoice_categories'
+          fieldKeys: 'h5_pc_invoice_categories,if_need_mobile,if_need_email'
         }
       }).then(res => {
         vant.closeToast()
         if (res.data.code === 1) {
-          this.invoiceCategoryList = JSON.parse(res.data.content[0].fieldValue)
-          this.changeInvoiceCategory(this.invoiceCategoryList[0])
+          res.data.content.forEach(item => {
+            if (item.fieldKey === 'h5_pc_invoice_categories') {
+              this.invoiceCategoryList = JSON.parse(item.fieldValue)
+              this.changeInvoiceCategory(this.invoiceCategoryList[0])
+            }
+            if (item.fieldKey === 'if_need_mobile') {
+              this.ifNeedMobile = item.fieldValue === 'true'
+            }
+            if (item.fieldKey === 'if_need_email') {
+              this.ifNeedEmail = item.fieldValue === 'true'
+            }
+          })
         } else {
           this.invoiceCategoryList = []
         }
@@ -243,7 +256,7 @@ const appHtml = {
           return vant.showToast('请输入税号')
         }
       }
-      if (!checkEmailMobile(this.invoiceForm)) return
+      if (!checkEmailMobile(this.invoiceForm, this.ifNeedMobile, this.ifNeedEmail)) return
       vant.showConfirmDialog({
         title: '提示',
         message: '确认抬头和金额正确并申请开票吗？',

@@ -21,16 +21,21 @@ function validEmail(email) {
 /**
  * 检查邮箱和手机号码
  */
-function checkEmailMobile(data) {
+function checkEmailMobile(data, ifNeedMobile, ifNeedEmail) {
   // 验证邮箱
-  if (!data.email) {
+  if (ifNeedEmail && !data.email) {
     vant.showToast('请输入邮箱')
     return false
-  } else if (!validEmail(data.email)) {
+  }
+  if (data.email && !validEmail(data.email)) {
     vant.showToast('邮箱格式不正确')
     return false
   }
   // 手机号验证
+  if (ifNeedMobile && !data.mobile) {
+    vant.showToast('请输入手机号码')
+    return false
+  }
   if (data.mobile && !validMobile(data.mobile)) {
     vant.showToast('手机号码格式不正确')
     return false

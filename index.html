@@ -48,8 +48,13 @@
         :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'" @focus="searchCompanyTitleList"
         @keyup="searchCompanyTitleList" @blur="inputBlur" required>
       </van-field>
-      <div class="drop-down" v-if="dropDownShow">
-        <p v-for="(item,index) in searchList" :key="index" @mouseDown="chooseCompanyTitle(index)">{{item.name}}</p>
+      <div v-if="dropDownShow" class="searchList">
+        <ul>
+          <li v-for="(item, index) in searchList" :key="index" class="searchList-item"
+            @mousedown="chooseCompany(index)">
+            {{ item.name }}
+          </li>
+        </ul>
       </div>
       <van-field v-if="willShow" v-model="invoiceForm.purchaserTaxpayerNumber" label="税号" placeholder="请输入税号" required>
       </van-field>
@@ -87,8 +92,10 @@
     </van-cell-group>
 
     <van-cell-group title="接收方式" inset>
-      <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号" required></van-field>
-      <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码"></van-field>
+      <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号" :required="ifNeedEmail">
+      </van-field>
+      <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码" :required="ifNeedMobile">
+      </van-field>
     </van-cell-group>
 
     <div class="fixed-bottom">
