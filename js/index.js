@@ -26,7 +26,7 @@ const appHtml = {
       code: '',
       shopName: '', //商户名称
       invoiceCategoryList: [],
-      ifNeedMobile: false,
+      ifNeedMobile: true,
       ifNeedEmail: false
     }
   },
@@ -222,9 +222,6 @@ const appHtml = {
             if (item.fieldKey === 'h5_pc_invoice_categories') {
               this.invoiceCategoryList = JSON.parse(item.fieldValue)
               this.changeInvoiceCategory(this.invoiceCategoryList[0])
-            }
-            if (item.fieldKey === 'if_need_mobile') {
-              this.ifNeedMobile = item.fieldValue === 'true'
             }
             if (item.fieldKey === 'if_need_email') {
               this.ifNeedEmail = item.fieldValue === 'true'
