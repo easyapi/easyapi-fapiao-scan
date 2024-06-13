@@ -1,5 +1,11 @@
+body,
+html,
 #app {
   background: #f4f4f4;
+  height: 100%;
+}
+
+.container{
   padding-bottom: 80px;
 }
 
@@ -51,12 +57,6 @@ input {
 
 .van-cell__value>span {
   color: #646566;
-}
-
-.container {
-  width: 10rem;
-  background-color: #f7f8fa;
-  border-radius: 5px;
 }
 
 .selected {

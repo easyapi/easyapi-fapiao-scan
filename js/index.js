@@ -192,11 +192,8 @@ const appHtml = {
         params: {}
       }).then(res => {
         let data = res.data.content
-        if (data.state === -1 || data.state === -2) {
-          window.location.href = "expire.html";
-        }
-        if (data.state === 1) {
-          window.location.href = "invoice.html?pdfUrl=" + data.invoice.electronicInvoiceUrl + "&imgUrl=" + data.invoice.electronicInvoiceImg;
+        if (data.invoice && data.invoice.invoiceId) {
+          window.location.href = "invoice.html?invoiceId=" + data.invoice.invoiceId + '&accessToken=' + data.accessToken
         }
         this.shopName = data.shopName
         if (data.invoice) this.invoiceForm = data.invoice

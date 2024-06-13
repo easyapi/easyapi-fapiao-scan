@@ -3,54 +3,162 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>二维码开票</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" type="text/css" href="css/info.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/vant/4.6.5/index.min.css" />
+  <title>二维码开票</title>
   <style>
-    .button {
-      background-color: #008CBA;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      width: 130px;
+    .container {
+      padding: 20px 0;
+
+      .header {
+        display: flex;
+        align-items: center;
+        padding: 0 16px 10px 16px;
+
+        .img {
+          width: 40px;
+          height: 40px;
+        }
+
+        span {
+          font-size: 18px;
+          margin-left: 10px;
+          font-weight: 550;
+        }
+      }
+
+      .invoice-category {
+        .van-cell__value {
+          min-width: 40%;
+        }
+      }
+
+      .card {
+        padding: 0 15px;
+
+        .title {
+          color: #969799;
+          padding: 15px 0;
+        }
+
+        .attch {
+          padding: 15px 15px 5px 15px;
+          background: #fff;
+          border-radius: 8px;
+          overflow: hidden;
+          display: flex;
+          flex-wrap: wrap;
+
+          img {
+            width: 120px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+          }
+        }
+      }
     }
 
-    .preview {
-      margin-top: 10px;
-      text-align: center;
+    .popup {
+      padding: 20px;
+
+      .title {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .tip {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #969799;
+      }
+
     }
 
-    .content {
-      margin-top: 10px;
-    }
   </style>
 </head>
 
 <body>
-<div class="title">
-  <h1>发票开具中</h1>
-</div>
-<div>
-  <p class="preview">预览发票</p>
-</div>
-<div class="content">
-  <p><a id="pdfUrl" class="button" href="">下载电子发票PDF</a></p>
-  <p><a id="imgUrl" class="button" href="">保存图片</a></p>
-</div>
-<script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.min.js"></script>
-<script src="https://cdn.staticfile.org/vant/4.6.5/vant.min.js"></script>
-<script src="js/flexible.js"></script>
-<script src="js/param.js"></script>
-<script>
-  document.getElementById("pdfUrl").href = getQueryString("pdfUrl");
-  document.getElementById("imgUrl").href = getQueryString("imgUrl");
-</script>
+  <div id="app" v-cloak>
+    <div class="container">
+      <div class="header" v-if="invoiceDetail.statements">
+        <img class="img" :src="invoiceDetail.statements.img" />
+        <span>{{invoiceDetail.statements.text}}</span>
+      </div>
+      <van-cell-group v-if="invoiceDetail.statements" inset>
+        <div class="invoice-category">
+          <van-cell :title="invoiceDetail.category"
+            :value="invoiceDetail.statements.text === '已开票' || invoiceDetail.statements.text === '已红冲' ? '预览' : ''"
+            @click="viewPicture"
+            :is-link="invoiceDetail.statements.text === '已开票' || invoiceDetail.statements.text === '已红冲'" />
+        </div>
+        <div>
+          <van-cell v-if="invoiceDetail.statements.text === '审核未通过' && invoiceDetail.consoleReason" title="未通过原因"
+            :value="invoiceDetail.consoleReason" />
+        </div>
+      </van-cell-group>
+      <van-cell-group title="发票详情" inset>
+        <div>
+          <van-cell title="发票抬头" :value="invoiceDetail.purchaserName" />
+        </div>
+        <div>
+          <van-cell title="税号" :value="invoiceDetail.purchaserTaxpayerNumber" />
+        </div>
+        <div>
+          <van-cell title="地址、电话" :value="`${invoiceDetail.purchaserAddress}${invoiceDetail.purchaserPhone}`" />
+        </div>
+        <div>
+          <van-cell title="开户行及账号" :value="`${invoiceDetail.purchaserBank}${invoiceDetail.purchaserBankAccount}`" />
+        </div>
+        <div>
+          <van-cell title="发票金额">
+            <div slot="right-icon" :style="`color:${invoiceDetail.color}`" class="price">
+              ￥{{invoiceDetail.price}}
+            </div>
+          </van-cell>
+        </div>
+        <div>
+          <van-cell title="备注" :value="invoiceDetail.remark" />
+        </div>
+      </van-cell-group>
+      <div v-if="attachList.length > 0" class="card">
+        <div class="title">
+          附件
+        </div>
+        <div class="attch">
+          <img v-for="(item, index) in attachList" :key="index" :src="item" @click="viewImagePreview(attachList)">
+        </div>
+      </div>
+      <van-cell-group title="接收方式" inset>
+        <div>
+          <van-cell title="电子邮件" :value="invoiceDetail.email" />
+        </div>
+        <div>
+          <van-cell title="手机号码" :value="invoiceDetail.mobile" />
+        </div>
+      </van-cell-group>
+      <van-popup v-model:show="popupVisible" class="popup" align="center">
+        <div class="title">发票预览</div>
+        <img :src="invoiceDetail.electronicInvoiceImg" @click="viewImagePreview([invoiceDetail.electronicInvoiceImg])">
+        <van-button type="primary" data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="copyInfo"
+          @click="copyLink">
+          复制发票下载地址
+        </van-button>
+        <div class="tip">复制发票下载地址并在浏览器中打开进行下载</div>
+      </van-popup>
+    </div>
+
+  </div>
+  <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.min.js"></script>
+  <script src="https://cdn.staticfile.org/vue-router/4.0.11/vue-router.global.min.js"></script>
+  <script src="https://cdn.staticfile.org/vant/4.6.5/vant.min.js"></script>
+  <script src="https://cdn.staticfile.org/axios/1.4.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <script src="js/param.js"></script>
+  <script src="js/invoice.js"></script>
+  <script src="js/invoice-category.js"></script>
 </body>
 
 </html>
