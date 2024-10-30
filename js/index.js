@@ -197,6 +197,7 @@ const appHtml = {
         }
         this.shopName = data.shopName
         if (data.invoice) this.invoiceForm = data.invoice
+        this.invoiceForm.outOrderNo = data.shopNo;
         this.invoiceForm.remark = data.remark;
         this.invoiceForm.type = '企业'
         this.invoicePrice = data.price ? data.price : 0
