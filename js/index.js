@@ -201,7 +201,13 @@ const appHtml = {
         this.invoiceForm.type = '企业'
         this.invoicePrice = data.price ? data.price : 0
         this.scanItems = data.items;
-        this.getInvoiceCategoryList(data.accessToken)
+        if (data.category) {
+          vant.closeToast()
+          this.invoiceCategoryList = [data.category]
+          this.changeInvoiceCategory(data.category)
+        } else {
+          this.getInvoiceCategoryList(data.accessToken)
+        }
       }).catch(error => {
         vant.showToast(error.response.data.message)
       });
