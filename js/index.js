@@ -25,12 +25,11 @@ const appHtml = {
       invoicePrice: 0,
       code: '',
       shopName: '', //商户名称
-      invoiceCategoryList: [],
-      ifNeedMobile: true,
-      ifNeedEmail: false
+      invoiceCategoryList: []
     }
   },
   created() {
+    document.title = "扫码开票";
     // 获取二维码的code
     this.code = getQueryString("code");
     this.getScan();
@@ -230,9 +229,6 @@ const appHtml = {
               this.invoiceCategoryList = JSON.parse(item.fieldValue)
               this.changeInvoiceCategory(this.invoiceCategoryList[0])
             }
-            if (item.fieldKey === 'if_need_email') {
-              this.ifNeedEmail = item.fieldValue === 'true'
-            }
           })
         } else {
           this.invoiceCategoryList = []
@@ -257,7 +253,9 @@ const appHtml = {
           return vant.showToast('请输入税号')
         }
       }
-      if (!checkEmailMobile(this.invoiceForm, this.ifNeedMobile, this.ifNeedEmail)) return
+      if (!this.invoiceForm.email && !this.invoiceForm.mobile) {
+        return vant.showToast('请填写邮箱账号或手机号码')
+      }
       vant.showConfirmDialog({
         title: '提示',
         message: '确认抬头和金额正确并申请开票吗？',
