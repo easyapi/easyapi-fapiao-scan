@@ -94,9 +94,9 @@
       </van-cell-group>
 
       <van-cell-group title="接收方式" inset>
-        <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号">
+        <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="请输入邮箱账号" :required="ifNeedEmail">
         </van-field>
-        <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码">
+        <van-field name="手机号码" label="手机号码" v-model="invoiceForm.mobile" placeholder="请输入手机号码" :required="ifNeedMobile">
         </van-field>
       </van-cell-group>
 

@@ -25,11 +25,10 @@ const appHtml = {
       invoicePrice: 0,
       code: '',
       shopName: '', //商户名称
-      invoiceCategoryList: []
+      invoiceCategoryList: [],
+      ifNeedMobile: false,
+      ifNeedEmail: false
     }
-  },
-  mounted() {
-    document.title = "扫码开票";
   },
   created() {
     // 获取二维码的code
@@ -203,6 +202,7 @@ const appHtml = {
         this.invoiceForm.type = '企业'
         this.invoicePrice = data.price ? data.price : 0
         this.scanItems = data.items;
+        this.settingFind(data.accessToken)
         if (data.category) {
           vant.closeToast()
           this.invoiceCategoryList = [data.category]
@@ -221,7 +221,7 @@ const appHtml = {
       axios.get("https://fapiao-api.easyapi.com/setting/find", {
         params: {
           accessToken: accessToken,
-          fieldKeys: 'h5_pc_invoice_categories,if_need_mobile,if_need_email'
+          fieldKeys: 'h5_pc_invoice_categories'
         }
       }).then(res => {
         vant.closeToast()
@@ -234,6 +234,32 @@ const appHtml = {
           })
         } else {
           this.invoiceCategoryList = []
+        }
+      }).catch(error => {
+        vant.closeToast()
+        vant.showToast(error.response.data.message)
+      })
+    },
+    /**
+     * 获取是否需要填写手机号码邮箱
+     */
+    settingFind(accessToken) {
+      axios.get("https://fapiao-api.easyapi.com/setting/find", {
+        params: {
+          accessToken: accessToken,
+          fieldKeys: 'if_need_mobile,if_need_email'
+        }
+      }).then(res => {
+        vant.closeToast()
+        if (res.data.code === 1) {
+          res.data.content.forEach(item => {
+            if (item.fieldKey === 'if_need_mobile') {
+              this.ifNeedMobile = item.fieldValue === 'true'
+            }
+            if (item.fieldKey === 'if_need_email') {
+              this.ifNeedEmail = item.fieldValue === 'true'
+            }
+          })
         }
       }).catch(error => {
         vant.closeToast()
@@ -255,9 +281,13 @@ const appHtml = {
           return vant.showToast('请输入税号')
         }
       }
+
+      if (!checkEmailMobile(this.invoiceForm, this.ifNeedMobile, this.ifNeedEmail)) return
+
       if (!this.invoiceForm.email && !this.invoiceForm.mobile) {
         return vant.showToast('请填写邮箱账号或手机号码')
       }
+
       vant.showConfirmDialog({
         title: '提示',
         message: '确认抬头和金额正确并申请开票吗？',
