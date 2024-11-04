@@ -41,6 +41,7 @@ const appHtml = {
      */
     selectWeiXinCompany() {
       axios.get(`https://account-api.easyapi.com/jssdk/wxe89b7b79aa61a423/config?url=${window.location.href}`).then(res => {
+        vant.showToast(JSON.stringify(res))
         if (res) {
           wx.config({
             beta: true,
