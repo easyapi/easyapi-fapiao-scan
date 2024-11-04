@@ -36,6 +36,58 @@ const appHtml = {
     this.getScan();
   },
   methods: {
+    /**
+     * 选择微信抬头
+     */
+    selectWeiXinCompany() {
+      axios.get(`https://account-api.easyapi.com/jssdk/wxe89b7b79aa61a423/config?url=${window.location.href}`).then(res => {
+        if (res) {
+          wx.config({
+            beta: true,
+            timestamp: res.timestamp,
+            nonceStr: res.nonceStr,
+            signature: res.signature,
+            appId: res.appId,
+            jsApiList: ['chooseInvoiceTitle'],
+          })
+          wx.ready(() => {
+            wx.invoke(
+              'chooseInvoiceTitle', {
+                scene: '1', // 不是必填  使用场景 1开具发票 2其他
+              },
+              (res) => {
+                const invoiceTitleInfo = res.choose_invoice_title_info
+                // 0单位 1个人
+                // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
+                if (invoiceTitleInfo) {
+                  const target = JSON.parse(invoiceTitleInfo)
+                  if (target.type === '1') {
+                    this.invoiceForm.type === "个人"
+                    this.invoiceForm.purchaserName = target.title;
+                    this.invoiceForm.purchaserTaxpayerNumber = '';
+                    this.invoiceForm.purchaserAddress = '';
+                    this.invoiceForm.purchaserPhone = '';
+                    this.invoiceForm.purchaserBank = '';
+                    this.invoiceForm.purchaserBankAccount = '';
+                  } else {
+                    this.invoiceForm.type === "企业"
+                    this.invoiceForm.purchaserName = target.title;
+                    this.invoiceForm.purchaserTaxpayerNumber = target.taxNumber;
+                    this.invoiceForm.purchaserAddress = target.companyAddress;
+                    this.invoiceForm.purchaserPhone = target.telephone;
+                    this.invoiceForm.purchaserBank = target.bankName;
+                    this.invoiceForm.purchaserBankAccount = target.bankAccount;
+                  }
+                }
+              },
+            )
+          })
+          wx.error((error) => {
+            vant.showToast(JSON.stringify(error))
+          })
+        }
+      })
+    },
     invoiceTag(invoiceCategory) {
       if (invoiceCategory === '增值税电子普通发票')
         return {

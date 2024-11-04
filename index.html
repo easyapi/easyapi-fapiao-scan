@@ -14,7 +14,7 @@
 <body>
   <div id="app" v-cloak>
     <div class="container">
-      <van-notice-bar left-icon="volume-o">
+      <van-notice-bar left-icon="volume-o" @click="selectWeiXinCompany">
         您正在使用{{shopName}}二维码扫描开票服务，请仔细确认开票内容，一经开出无法退票重开。
       </van-notice-bar>
 
@@ -48,6 +48,11 @@
         <van-field v-model="invoiceForm.purchaserName" label="发票抬头"
           :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'" @focus="searchCompanyTitleList"
           @keyup="searchCompanyTitleList" @blur="inputBlur" required>
+          <!-- <template #right-icon>
+            <van-button type="primary" size="small" @click="selectWeiXinCompany">
+              获取微信抬头
+            </van-button>
+          </template> -->
         </van-field>
         <div v-if="dropDownShow" class="searchList">
           <ul>
@@ -110,6 +115,7 @@
   <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.min.js"></script>
   <script src="https://cdn.staticfile.org/vant/4.6.5/vant.min.js"></script>
   <script src="https://cdn.staticfile.org/axios/1.4.0/axios.min.js"></script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <script src="js/param.js"></script>
   <script src="js/index.js"></script>
   <script src="js/validate.js"></script>
