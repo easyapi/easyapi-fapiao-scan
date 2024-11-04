@@ -44,6 +44,7 @@ const appHtml = {
         if (res) {
           wx.config({
             beta: true,
+            debug: true,
             timestamp: res.timestamp,
             nonceStr: res.nonceStr,
             signature: res.signature,
@@ -62,7 +63,7 @@ const appHtml = {
                 if (invoiceTitleInfo) {
                   const target = JSON.parse(invoiceTitleInfo)
                   if (target.type === '1') {
-                    this.invoiceForm.type === "个人"
+                    this.invoiceForm.type = "个人"
                     this.invoiceForm.purchaserName = target.title;
                     this.invoiceForm.purchaserTaxpayerNumber = '';
                     this.invoiceForm.purchaserAddress = '';
@@ -70,7 +71,7 @@ const appHtml = {
                     this.invoiceForm.purchaserBank = '';
                     this.invoiceForm.purchaserBankAccount = '';
                   } else {
-                    this.invoiceForm.type === "企业"
+                    this.invoiceForm.type = "企业"
                     this.invoiceForm.purchaserName = target.title;
                     this.invoiceForm.purchaserTaxpayerNumber = target.taxNumber;
                     this.invoiceForm.purchaserAddress = target.companyAddress;
