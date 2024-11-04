@@ -56,6 +56,7 @@ const appHtml = {
                 scene: '1', // 不是必填  使用场景 1开具发票 2其他
               },
               (res) => {
+                console.log(res)
                 const invoiceTitleInfo = res.choose_invoice_title_info
                 // 0单位 1个人
                 // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
