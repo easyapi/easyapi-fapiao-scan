@@ -41,15 +41,13 @@ const appHtml = {
      */
     selectWeiXinCompany() {
       axios.get(`https://account-api.easyapi.com/jssdk/wxe89b7b79aa61a423/config?url=${window.location.href}`).then(res => {
-        vant.showToast(JSON.stringify(res))
-        if (res) {
+        if (res.data) {
           wx.config({
             beta: true,
-            debug: true,
-            timestamp: res.timestamp,
-            nonceStr: res.nonceStr,
-            signature: res.signature,
-            appId: res.appId,
+            timestamp: res.data.timestamp,
+            nonceStr: res.data.nonceStr,
+            signature: res.data.signature,
+            appId: res.data.appId,
             jsApiList: ['chooseInvoiceTitle'],
           })
           wx.ready(() => {
