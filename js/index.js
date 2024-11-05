@@ -39,7 +39,6 @@ const appHtml = {
     }
   },
   created() {
-    document.title = '扫码开票';
     // 获取二维码的code
     this.code = getQueryString("code");
     this.getScan();
