@@ -27,7 +27,15 @@ const appHtml = {
       shopName: '', //商户名称
       invoiceCategoryList: [],
       ifNeedMobile: false,
-      ifNeedEmail: false
+      ifNeedEmail: false,
+    }
+  },
+  computed: {
+    ifShowModel() {
+      return !this.scanItems.every(item => !item.model)
+    },
+    ifShowUnit() {
+      return !this.scanItems.every(item => !item.unit)
     }
   },
   created() {
@@ -336,7 +344,7 @@ const appHtml = {
       if (!checkEmailMobile(this.invoiceForm, this.ifNeedMobile, this.ifNeedEmail)) return
 
       if (!this.invoiceForm.email && !this.invoiceForm.mobile) {
-        return vant.showToast('请填写邮箱账号或手机号码')
+        return vant.showToast('邮箱账号或手机号码必填一个')
       }
 
       vant.showConfirmDialog({

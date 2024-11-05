@@ -5,7 +5,7 @@ html,
   height: 100%;
 }
 
-.container{
+.container {
   padding-bottom: 80px;
 }
 
@@ -83,37 +83,32 @@ input {
   text-overflow: ellipsis;
 }
 
-.item-title {
-  background-color: #fff;
-  padding: 0 10px;
-  display: flex;
-  list-style: none;
-  border-bottom: 1px solid #ddd;
+.wx-company {
+  cursor: pointer;
+  color: #1989fa;
 }
 
-.item-title li {
-  width: 18%;
-  line-height: 44px;
-  color: #333;
+table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 12px;
+}
+
+
+th,
+td {
+  border-bottom: 1px solid #e9edf0;
+}
+
+th,
+td {
+  padding: 10px;
   text-align: center;
+}
+
+th {
+  color: #adadad;
   font-weight: 500;
-}
-
-.item-row {
-  background-color: #fff;
-  padding: 0 10px;
-  display: flex;
-  list-style: none;
-  border-bottom: 1px solid #ddd;
-}
-
-.item-row li {
-  width: 18%;
-  line-height: 40px;
-  text-align: center;
-  font-size: 12px;
-  color: #333;
 }
 
 [v-cloak] {
