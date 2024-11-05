@@ -115,13 +115,13 @@ const appHtml = {
         }
       if (invoiceCategory === '全电电子普通发票')
         return {
-          name: '全电普',
+          name: '数电普',
           color: '#00b2c8',
           bgColor: '#f2fbff'
         }
       if (invoiceCategory === '全电电子专用发票')
         return {
-          name: '全电专',
+          name: '数电专',
           color: '#665823',
           bgColor: '#f8f4e5'
         }
