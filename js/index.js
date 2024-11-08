@@ -28,6 +28,7 @@ const appHtml = {
       invoiceCategoryList: [],
       ifNeedMobile: false,
       ifNeedEmail: false,
+      isComposing: false,
     }
   },
   computed: {
@@ -43,6 +44,8 @@ const appHtml = {
     // 获取二维码的code
     this.code = getQueryString("code");
     this.getScan();
+    // 创建防抖函数
+    this.debouncedSearchCompanyTitleList = _.debounce(this.searchCompanyTitleList, 500);
   },
   methods: {
     /**
@@ -182,11 +185,25 @@ const appHtml = {
         this.invoiceForm.companyId = "";
       }
     },
+    handleInput() {
+      if (!this.isComposing) {
+        this.debouncedSearchCompanyTitleList();
+      }
+    },
+    handleCompositionStart() {
+      this.isComposing = true;
+    },
+    handleCompositionEnd() {
+      this.isComposing = false;
+      this.debouncedSearchCompanyTitleList();
+    },
     /**
      * 企业抬头查询
      */
     async searchCompanyTitleList() {
       if (this.invoiceForm.purchaserName.length < 4) {
+        this.searchList = []
+        this.dropDownShow = false;
         return;
       }
       let accessToken = await this.getAccessToken().then()
@@ -196,12 +213,12 @@ const appHtml = {
           name: this.invoiceForm.purchaserName
         }
       }).then(res => {
-        if (res.data.code === 0) {
+        if (res.data.code === 1) {
+          this.searchList = res.data.content;
+          this.dropDownShow = true;
+        } else {
           this.dropDownShow = false;
-          return;
         }
-        this.searchList = res.data.content;
-        this.dropDownShow = true;
       }).catch(error => {
         this.dropDownShow = false;
       });
@@ -223,20 +240,6 @@ const appHtml = {
      */
     inputBlur() {
       this.dropDownShow = false;
-      let has;
-      has = false;
-      for (let i = 0; i < this.searchList.length; i++) {
-        if (this.searchList[i].name === this.invoiceForm.purchaserName) {
-          has = true;
-        }
-      }
-      if (!has) {
-        this.invoiceForm.purchaserTaxpayerNumber = '';
-        this.invoiceForm.purchaserAddress = '';
-        this.invoiceForm.purchaserPhone = '';
-        this.invoiceForm.purchaserBank = '';
-        this.invoiceForm.purchaserBankAccount = '';
-      }
     },
     /**
      * 获取获取二维码小票信息
