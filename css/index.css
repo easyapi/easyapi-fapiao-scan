@@ -64,14 +64,13 @@ input {
 }
 
 .searchList {
-  position: absolute;
+  position: fixed;
   background-color: #fff;
-  right: 16px;
-  left: 16px;
+  right: 0;
+  left: 0;
+  bottom: 0;
   padding: 0 16px;
   z-index: 999;
-  min-height: 150px;
-  max-height: 200px;
   overflow-y: scroll;
 }
 
@@ -79,6 +78,7 @@ input {
   font-size: 14px;
   color: #1989FA;
   padding: 10px 0;
+  line-height: 24px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

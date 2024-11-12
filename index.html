@@ -46,12 +46,13 @@
         <van-field v-model="invoiceForm.purchaserName" label="发票抬头"
           :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'"
           @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd" @input="handleInput"
-          @focus="handleInput" @blur="inputBlur" required>
+          @focus="inputFocus" @blur="inputBlur" required>
           <template #right-icon>
             <span class="wx-company" @click="selectWeiXinCompany">微信抬头</span>
           </template>
         </van-field>
-        <div v-if="dropDownShow" class="searchList">
+        <div class="helper" />
+        <div v-show="dropDownShow" class="searchList">
           <ul>
             <li v-for="(item, index) in searchList" :key="index" class="searchList-item"
               @mousedown="chooseCompany(index)">

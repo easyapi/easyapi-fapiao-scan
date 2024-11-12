@@ -215,7 +215,7 @@ const appHtml = {
       }).then(res => {
         if (res.data.code === 1) {
           this.searchList = res.data.content;
-          this.dropDownShow = true;
+          this.openDropDown()
         } else {
           this.dropDownShow = false;
         }
@@ -240,6 +240,21 @@ const appHtml = {
      */
     inputBlur() {
       this.dropDownShow = false;
+    },
+     /**
+     * 发票抬头聚焦后
+     */
+    inputFocus() {
+      if (this.invoiceForm.purchaserName.length > 3 && this.searchList.length > 0) {
+        this.openDropDown()
+      }
+    },
+    openDropDown() {
+      const helper = document.querySelector('.helper');
+      const element = document.querySelector('.searchList');
+      let distanceToTop = helper.offsetTop;
+      element.style.top = `${distanceToTop}px`
+      this.dropDownShow = true;
     },
     /**
      * 获取获取二维码小票信息
