@@ -217,6 +217,7 @@ const appHtml = {
           this.searchList = res.data.content;
           this.openDropDown()
         } else {
+          this.searchList = []
           this.dropDownShow = false;
         }
       }).catch(error => {
