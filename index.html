@@ -32,48 +32,55 @@
             :style="invoiceForm.category === item ? `color:${invoiceTag(item).color}` : 'color:#969799' ">{{ item}}</span>
         </div>
       </div>
-      <van-cell-group title="开票信息" inset>
-        <van-cell>
-          <template #title>
-            <span class="makeInvoce-required">*</span>
-            <span>抬头类型</span>
-          </template>
-          <van-radio-group v-model="invoiceForm.type" direction="horizontal" @change="selectType">
-            <van-radio name="企业">企业</van-radio>
-            <van-radio name="个人">个人/事业单位</van-radio>
-          </van-radio-group>
-        </van-cell>
-        <van-field v-model="invoiceForm.purchaserName" label="发票抬头"
-          :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'"
-          @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd" @input="handleInput"
-          @focus="inputFocus" @blur="inputBlur" required>
-          <template #right-icon>
-            <span class="wx-company" @click="selectWeiXinCompany">微信抬头</span>
-          </template>
-        </van-field>
-        <div class="helper"></div>
-        <div v-show="dropDownShow" class="searchList">
-          <ul>
-            <li v-for="(item, index) in searchList" :key="index" class="searchList-item"
-              @mousedown="chooseCompany(index)">
-              {{ item.name }}
-            </li>
-          </ul>
-        </div>
-        <van-field v-if="willShow" v-model="invoiceForm.purchaserTaxpayerNumber" label="税号" placeholder="请输入税号"
-          required>
-        </van-field>
-        <van-field v-if="willShow" v-show="isHide" label="更多" placeholder="地址、电话、开户行等" @click="purchaserMore"
-          right-icon="arrow-down"></van-field>
-        <div v-show="isShow">
-          <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" placeholder="请输入地址"
-            right-icon="arrow-up" @click-right-icon="purchaserMoreHide"></van-field>
-          <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
-          <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
-          <van-field v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号" placeholder="请输入开户行账号">
+      <div class="invoice-info">
+        <van-cell-group title="开票信息" inset>
+          <van-cell class="radius-top">
+            <template #title>
+              <span class="makeInvoce-required">*</span>
+              <span>抬头类型</span>
+            </template>
+            <van-radio-group v-model="invoiceForm.type" direction="horizontal" @change="selectType">
+              <van-radio name="企业">企业</van-radio>
+              <van-radio name="个人">个人/事业单位</van-radio>
+            </van-radio-group>
+          </van-cell>
+          <div class="invoice-header">
+            <van-field v-model="invoiceForm.purchaserName" label="发票抬头"
+              :placeholder="this.invoiceForm.type === '个人'?'请输入姓名/事业单位':'请输入发票抬头'"
+              @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd" @input="handleInput"
+              @focus="inputFocus" @blur="inputBlur" required>
+              <template #right-icon>
+                <span class="wx-company" @click="selectWeiXinCompany">微信抬头</span>
+              </template>
+            </van-field>
+            <div v-show="dropDownShow" class="searchList">
+              <ul>
+                <li v-for="(item, index) in searchList" :key="index" class="searchList-item"
+                  @mousedown="chooseCompany(index)">
+                  {{ item.name }}
+                </li>
+                <li class="searchList-item none-of-them" @click="state.listShow = false">
+                  以上都不是，手工填写
+                </li>
+              </ul>
+            </div>
+          </div>
+          <van-field v-if="willShow" v-model="invoiceForm.purchaserTaxpayerNumber" label="税号" placeholder="请输入税号"
+            required>
           </van-field>
-        </div>
-      </van-cell-group>
+          <van-field v-if="willShow" v-show="isHide" class="radius-bottom" label="更多" placeholder="地址、电话、开户行等"
+            @click="purchaserMore" right-icon="arrow-down"></van-field>
+          <div v-show="isShow">
+            <van-field v-if="willShow" v-model="invoiceForm.purchaserAddress" label="地址" placeholder="请输入地址"
+              right-icon="arrow-up" @click-right-icon="purchaserMoreHide"></van-field>
+            <van-field v-if="willShow" v-model="invoiceForm.purchaserPhone" label="电话" placeholder="请输入电话"></van-field>
+            <van-field v-if="willShow" v-model="invoiceForm.purchaserBank" label="开户行" placeholder="请输入开户行"></van-field>
+            <van-field class="radius-bottom" v-if="willShow" v-model="invoiceForm.purchaserBankAccount" label="银行账号"
+              placeholder="请输入开户行账号">
+            </van-field>
+          </div>
+        </van-cell-group>
+      </div>
       <van-cell-group title="发票内容" inset>
         <table>
           <thead>

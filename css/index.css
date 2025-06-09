@@ -51,6 +51,18 @@ input {
   border-bottom: 1px solid #ebedf0
 }
 
+.radius-top {
+  border-radius: 8px 8px 0 0;
+}
+
+.radius-bottom {
+  border-radius: 0 0 8px 8px;
+}
+
+.invoice-info .van-cell-group--inset {
+  overflow: visible !important;
+}
+
 .van-cell__value {
   min-width: 70%;
 }
@@ -63,15 +75,19 @@ input {
   background: #000;
 }
 
+.invoice-header {
+  position: relative;
+}
+
 .searchList {
-  position: fixed;
+  position: absolute;
   background-color: #fff;
   right: 0;
   left: 0;
-  bottom: 0;
   padding: 0 16px;
   z-index: 999;
   overflow-y: scroll;
+  box-shadow: 0 2rpx 8rpx 0 rgb(0 0 0 / 10%);
 }
 
 .searchList-item {
@@ -79,10 +95,13 @@ input {
   color: #1989FA;
   padding: 10px 0;
   line-height: 24px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   border-bottom: 1px solid rgba(235, 237, 240, .5);
+}
+
+.none-of-them {
+  font-size: 12px;
+  border: none;
+  color: #999;
 }
 
 .wx-company {

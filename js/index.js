@@ -251,10 +251,6 @@ const appHtml = {
       }
     },
     openDropDown() {
-      const helper = document.querySelector('.helper');
-      const element = document.querySelector('.searchList');
-      let distanceToTop = helper.offsetTop;
-      element.style.top = `${distanceToTop}px`
       this.dropDownShow = true;
     },
     /**
