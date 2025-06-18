@@ -150,3 +150,7 @@ img {
   padding: 10px 16px;
   background-color: #fff;
 }
+
+.presentation-info .van-cell__value {
+  font-size: 13px !important;
+}

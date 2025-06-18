@@ -106,6 +106,19 @@
         </table>
         <van-field class="order_price" v-model="invoicePrice" label="发票金额" placeholder="" readonly></van-field>
         <van-field v-model="invoiceForm.remark" label="备注" placeholder="可输入发票备注信息"></van-field>
+        <div class="presentation-info">
+          <van-cell value="展示购买方地址、电话、开户银行及银行账号"
+            @click="isShowPurchaserAddressPhoneBank = !isShowPurchaserAddressPhoneBank">
+            <template #icon>
+              <van-checkbox shape="square" v-model="isShowPurchaserAddressPhoneBank" @click.stop />
+            </template>
+          </van-cell>
+          <van-cell value="展示销售方地址、电话、开户银行及银行账号" @click="isShowSellerAddressPhoneBank = !isShowSellerAddressPhoneBank">
+            <template #icon>
+              <van-checkbox shape="square" v-model="isShowSellerAddressPhoneBank" @click.stop />
+            </template>
+          </van-cell>
+        </div>
       </van-cell-group>
       <van-cell-group title="接收方式" inset>
         <van-field name="邮箱账号" label="邮箱账号" v-model="invoiceForm.email" placeholder="可接收电子发票邮件" :required="ifNeedEmail">

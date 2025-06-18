@@ -29,6 +29,8 @@ const appHtml = {
       ifNeedMobile: false,
       ifNeedEmail: false,
       isComposing: false,
+      isShowPurchaserAddressPhoneBank: false,
+      isShowSellerAddressPhoneBank: false
     }
   },
   computed: {
@@ -242,7 +244,7 @@ const appHtml = {
     inputBlur() {
       this.dropDownShow = false;
     },
-     /**
+    /**
      * 发票抬头聚焦后
      */
     inputFocus() {
@@ -377,7 +379,15 @@ const appHtml = {
         let accessToken = await this.getAccessToken().then()
         let data = {
           ...this.invoiceForm,
-          accessToken: accessToken
+          accessToken: accessToken,
+          showPurchaserAddressPhoneBank: '',
+          showSellerAddressPhoneBank: ''
+        }
+        if (this.isShowPurchaserAddressPhoneBank) {
+          data.showPurchaserAddressPhoneBank = '展示地址、电话、开户银行及银行账号'
+        }
+        if (this.isShowSellerAddressPhoneBank) {
+          data.showSellerAddressPhoneBank = '展示地址、电话、开户银行及银行账号'
         }
         axios.put("https://fapiao-api.easyapi.com/scan/" + this.code + "/make", data).then(res => {
           vant.closeToast()
